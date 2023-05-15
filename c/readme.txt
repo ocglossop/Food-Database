@@ -1,0 +1,1 @@
+This folder has all of the global components of my website, such as the page template and CSS and JS files.
