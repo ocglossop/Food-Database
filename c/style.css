@@ -1,0 +1,11 @@
+nav#main {
+    position: sticky;
+    top: 0;
+}
+nav#main ul {
+    list-style-type: none;
+}
+nav#main ul li {
+    float: left;
+    padding: 0.5em; 
+}
