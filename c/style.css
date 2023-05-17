@@ -1,11 +1,30 @@
-word
+/*Style for text*/
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13pt;
+}
+h1 {
+    font-family: verdana, sans-serif;
+    
+}
+
+
 .right {
     float: right;
 }
+.cf::after /*clearfix hack*/ { 
+    /*Adds an element which will float below the floating objects, 
+    which will cause the navbar to extend to the full height of the elements*/
+    content: "";
+    clear: both;
+    display: table;
+}
+
 
 nav#main {
-    position: sticky;
-    top: 0;
+    position: sticky; /*The navbar will stay at the top of the page when the user scrolls down*/
+    top: 0; 
+    width: 100%; /*To make the navbar fill the entire width of the page*/
 }
 nav ul {
     list-style-type: none;
@@ -14,6 +33,11 @@ nav#main ul li {
     float: left;
     padding: 0.5em; 
     font-size: 16pt;
+}
+nav#main ul li a {
+    font-family: verdana;
+    text-decoration: none;
+    /*color: #000;*/
 }
 
 footer {
