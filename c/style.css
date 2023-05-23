@@ -1,4 +1,7 @@
 /*Style for text*/
+:root { /*Global variables, such as colours, that are used by many different elements*/
+    --nav-color: lightblue; 
+}
 body {
     font-family: Arial, Helvetica, sans-serif; 
 } 
@@ -29,6 +32,7 @@ nav#main {
     position: sticky; /*The navbar will stay at the top of the page when the user scrolls down*/
     top: 0; 
     width: 100%; /*To make the navbar fill the entire width of the page*/
+    background-color: var(--nav-color); 
 }
 nav ul {
     list-style-type: none;
@@ -41,7 +45,7 @@ nav#main ul li {
 nav#main ul li a {
     font-family: arial;
     text-decoration: none;
-    /*color: #000;*/
+    color: #000;
 }
 
 footer {
