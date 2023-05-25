@@ -55,9 +55,11 @@ nav#main ul li a {
 
     text-decoration: none;
     color: #000;
+    
 }
 nav#main ul li a:hover { /*When a button is hovered over*/
     background-color: var(--nav-hover-color);
+    color: white;
 }
 
 
