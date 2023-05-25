@@ -40,7 +40,7 @@ nav#main {
 nav ul {
     list-style-type: none; /*Removes the bullet points beside each link*/
     margin: 0;
-    padding: 0;
+    padding: 0; /*Removes the large space on the left of the navbar*/
 }
 nav#main ul li {
     float: left;
@@ -48,10 +48,9 @@ nav#main ul li {
 }
 nav#main ul li a {
     font-size: 1.5rem;
-    height: 2em;
-    line-height: 2em;
-    box-sizing: border-box;
-    padding: 0;
+
+    display: block; /*To allow for vertical padding.*/
+    padding: 0.3em;
 
 
     text-decoration: none;
