@@ -1,7 +1,9 @@
 /*Style for text*/
 :root { /*Global custom variables, such as colours, that are used by many different elements*/
     --nav-color: rgb(199, 236, 246); /*The colour of the navbar*/
-    --nav-hover-color: rgb(109, 166, 181);/*The colour the links change to when hovered over*/
+    --nav-hover-color: rgb(109, 166, 181); /*The colour the links change to when hovered over*/
+    --footer-color: rgb(128, 128, 128); /*The background colour of the footer*/
+    --footer-hover-color: rgb(80, 80, 80);
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -46,7 +48,7 @@ nav#main ul li {
     float: left;
     
 }
-nav#main ul li a {
+nav ul li a {
     font-size: 1.5rem;
 
     display: block; /*To allow for vertical padding.*/
@@ -57,7 +59,7 @@ nav#main ul li a {
     color: #000;
     
 }
-nav#main ul li a:hover { /*When a button is hovered over*/
+nav ul li a:hover { /*When a button is hovered over*/
     background-color: var(--nav-hover-color);
     color: white;
 }
@@ -65,7 +67,16 @@ nav#main ul li a:hover { /*When a button is hovered over*/
 
 footer {
     padding: 1em;
+    background-color: var(--footer-color);
+    color: white;
 }
 footer nav {
     float: left;
+}
+footer nav ul li a {
+    font-size: 1rem; /*Makes the links smaller*/
+    color: white;
+}
+footer nav ul li a:hover{
+    background-color: var(--footer-hover-color)
 }
