@@ -13,11 +13,13 @@ body {
 h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 2rem; /*The font sizes will be relative to the user's browser settings*/
+    text-align: center; /*Puts the text in the centre of the page*/
 }
 h2 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5rem;
     font-weight: lighter;
+    text-align: center;
 }
 
 
