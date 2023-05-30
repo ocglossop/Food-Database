@@ -4,9 +4,10 @@
         <title>***</title> <!--The title that appears in the tab-->
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
+        <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
     </head>
     <body>
-        <nav id="main" class="cf">
+        <nav id="main" class="cf include-html" data-include-src="/c/avbar.html">
             <ul>
                 <li><a href>Home</a></li>
                 <li><a href>Database</a></li>
@@ -17,7 +18,7 @@
         <h2>Test</h2>
         <p>Test</p>
         <br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1
-        <footer class="cf">
+        <footer class="cf include-html" data-include-src="/c/foter.html">
             <nav>
                 <ul>
                     <li><a href>Home</a></li>
@@ -29,6 +30,8 @@
                 ©Oliver Glossop, 2023
             </p>
         </footer>
-        
+        <script>
+            includeHTML();
+        </script>
     </body>
 </html>
