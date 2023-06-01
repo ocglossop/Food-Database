@@ -21,6 +21,9 @@ h2 {
     font-weight: lighter;
     text-align: center;
 }
+p {
+    margin: 1em;
+}
 
 
 .right {
@@ -50,7 +53,7 @@ nav#main ul li {
     float: left;
     
 }
-nav ul li a {
+nav ul li a { 
     font-size: 1.5rem;
 
     display: block; /*To allow for vertical padding.*/
