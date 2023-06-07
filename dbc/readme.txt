@@ -1,0 +1,1 @@
+The folder containing the components of the IndexedDB database.
