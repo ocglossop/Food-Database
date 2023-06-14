@@ -6,6 +6,7 @@
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script src="/dbc/database-test.js"></script>
     </head>
     <body>
         <nav id="main" class="cf include-html" data-include-src="/c/navbar.html">
@@ -18,7 +19,15 @@
             </ul>
         </nav>
         <h1>Fridge</h1>
-        <script src="/dbc/database-test.js"></script>
+
+        <div id="output"></div>
+        <form onsubmit="">
+            <label for="name">Food Name</label><br>
+            <input type="text" name="name" id="name"><br>
+            <label for="qty">Quantity</label><br>
+            <input type="text" name="qty" id="qty"><br>
+            <input type="submit" value="Submit"><br>
+        </form>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
@@ -37,5 +46,6 @@
         <script>
             includeHTML();
         </script>
+        
     </body>
 </html>
