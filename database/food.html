@@ -21,12 +21,13 @@
         <h1>Fridge</h1>
 
         <div id="output"></div>
-        <form onsubmit="">
+        <form id="testform" onsubmit="return false"><!--A test form for my test database-->
             <label for="name">Food Name</label><br>
             <input type="text" name="name" id="name"><br>
             <label for="qty">Quantity</label><br>
             <input type="text" name="qty" id="qty"><br>
-            <input type="submit" value="Submit"><br>
+            <button type="button" onclick="submitData(document.getElementById('testform'))">Submit</button>
+            <!--Calls the function to add the data to the database-->
         </form>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
