@@ -21,12 +21,18 @@
         <h1>Fridge</h1>
 
         <div id="output"></div>
-        <form id="testform" onsubmit="return false"><!--A test form for my test database-->
+        <form id="outputtest" onsubmit="return retrieveData(this)">
+            <label for="id">Index</label><br>
+            <input type="number" name="id" id="id"><br>
+            <input type="submit" value="Retrieve">
+        </form>
+        <br>
+        <form id="inputform" onsubmit="return submitData(this)"><!--A test form for my test database-->
             <label for="name">Food Name</label><br>
             <input type="text" name="name" id="name"><br>
             <label for="qty">Quantity</label><br>
             <input type="text" name="qty" id="qty"><br>
-            <button type="button" onclick="submitData(document.getElementById('testform'))">Submit</button>
+            <input type="submit"></input>
             <!--Calls the function to add the data to the database-->
         </form>
         
