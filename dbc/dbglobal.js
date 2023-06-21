@@ -1,4 +1,11 @@
-
+function Item(name, useBy = true, unit = '', qty = 0, added, expiry) {
+    this.name = name; //The name of the food item
+    this.qty = qty; //The amount of the item
+    this.unit = unit; //The unit of the quantity
+    this.useBy = useBy; //Whether or not the expiry date is a use by or best before. 'Use by' by default
+    this.added = added; //The date the food was added
+    this.expiry = expiry; //The expiry date of the food
+}
 
 //Opening the database
 let db; //Database
@@ -22,10 +29,20 @@ openRequest.onsuccess = (event) => {
 //Creating the database
 openRequest.onupgradeneeded = (event) => {
     db = event.target.result;
-
+    //If I need to upgrade the database, I will change this section
     const foodStore = db.createObjectStore("foodStore", {autoIncrement: true});
     
+    const recipeStore = db.createObjectStore("recipeStore", {autoIncrement: true});
 
-    const recipeStore = db.createObjectStore("recipeStore", )
+    const shoppingList = db.createObjectStore("shoppingList", {autoIncrement: true});
 
+}
+
+//Reading data for a specific id
+function getItem(key, store, callback) {
+    const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
+    const request = objectStore.get(key); //Selects the chosen key
+
+    request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
+    //Add error handler
 }
