@@ -4,6 +4,9 @@
     --nav-hover-color: rgb(109, 166, 181); /*The colour the links change to when hovered over*/
     --footer-color: rgb(128, 128, 128); /*The background colour of the footer*/
     --footer-hover-color: rgb(80, 80, 80);
+    --form-color: rgb(178, 178, 178); /*The background colour of form elements*/
+    --input-color: rgb(232, 232, 232); /*The background colour of the input elements*/
+    --input-focus-color: white; /*The colour of the input when the user is typing*/
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -57,10 +60,7 @@ nav ul li a {
     font-size: 1.5rem;
 
     display: block; /*To allow for vertical padding.*/
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    padding: 0.3em 0.5em; /*Padding for top/bottom, padding for left/right*/
 
 
     text-decoration: none;
@@ -72,6 +72,25 @@ nav ul li a:hover { /*When a button is hovered over*/
     color: white;
 }
 
+/*Form elements*/
+form {
+    background-color: var(--form-color);
+    margin: auto;
+    padding: 0.5em;
+}
+form label {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.5em;
+}
+form input[type="text"] {
+    font-size: 1.5em;
+    
+    background-color: var(--input-color);
+    border: none;
+}
+form input[type="text"]:focus { /*When the user is typing*/
+    background-color: var(--input-focus-color);
+}
 
 footer {
     padding: 1em;
