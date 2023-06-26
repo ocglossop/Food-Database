@@ -7,6 +7,7 @@
     --form-color: rgb(178, 178, 178); /*The background colour of form elements*/
     --input-color: rgb(232, 232, 232); /*The background colour of the input elements*/
     --input-focus-color: white; /*The colour of the input when the user is typing*/
+    --input-placeholder-color: rgb(104, 104, 104); /*The colour of the placeholder text in an input*/
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -28,10 +29,8 @@ p {
     margin: 1em;
 }
 
-
-.right {
-    float: right;
-}
+.left {float: left;}
+.right {float: right;}
 .cf::after /*clearfix hack*/ { 
     /*Adds an element which will float below the floating objects, 
     which will cause the navbar to extend to the full height of the elements*/
@@ -78,20 +77,32 @@ form {
     margin: auto;
     padding: 0.5em;
 }
-form label {
+label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5em;
 }
-form input[type="text"] {
+input, select { /*Applies to all input elements*/
     font-size: 1.5em;
     
     background-color: var(--input-color);
     border: none;
 }
-form input[type="text"]:focus { /*When the user is typing*/
-    background-color: var(--input-focus-color);
+input[type=number] {
+    width: 3em;
+    text-align: right;
 }
 
+input:focus { /*When the user is typing*/
+    background-color: var(--input-focus-color);
+}
+/*
+form input[type=text]::placeholder {
+    color: var(--input-placeholder-color);
+}
+form input[type=text]:focus::placeholder {
+    color: white;
+}
+*/
 footer {
     padding: 1em;
     background-color: var(--footer-color);

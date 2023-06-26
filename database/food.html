@@ -21,8 +21,19 @@
         <h1>Fridge</h1>
 
         <form>
-            <label>test</label>
-            <input type="text" name="" id="">
+            <label for="name">Name: </label>
+            <input type="text" name="name" id="name">
+            <label for="qty">Amount: </label>
+            <input type="number" name="qty" id="qty">
+            <select>
+                <option value=""></option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+                <option value="L">L</option>
+            </select>
+            <br>
+            <label for="added">Date Added: </label>
+            <input type="date" name="added" id="added">
         </form>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
