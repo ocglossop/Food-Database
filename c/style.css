@@ -2,6 +2,7 @@
 :root { /*Global custom variables, such as colours, that are used by many different elements*/
     --nav-color: rgb(199, 236, 246); /*The colour of the navbar*/
     --nav-hover-color: rgb(109, 166, 181); /*The colour the links change to when hovered over*/
+
     --footer-color: rgb(128, 128, 128); /*The background colour of the footer*/
     --footer-hover-color: rgb(80, 80, 80);
     --form-color: rgb(178, 178, 178); /*The background colour of form elements*/
@@ -76,24 +77,38 @@ form {
     background-color: var(--form-color);
     margin: auto;
     padding: 0.5em;
+    line-height: 1.6; /*To add spacing between the lines*/
 }
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5em;
 }
 input, select { /*Applies to all input elements*/
-    font-size: 1.5em;
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    
+    box-sizing: border-box; /*The height includes the margin and padding*/
+    height: 1.4em; /*Relative to the font size of the element (1.5rem)*/
     
     background-color: var(--input-color);
-    border: none;
+    border: none; /*Removes the default black border*/
 }
 input[type=number] {
     width: 3em;
     text-align: right;
 }
 
+
 input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
+}
+input[type=submit] {
+    
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+input[type=submit]:hover {
+    background-color: var(--nav-hover-color);
+    color: white;
 }
 /*
 form input[type=text]::placeholder {
