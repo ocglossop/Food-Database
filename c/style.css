@@ -2,13 +2,14 @@
 :root { /*Global custom variables, such as colours, that are used by many different elements*/
     --nav-color: rgb(199, 236, 246); /*The colour of the navbar*/
     --nav-hover-color: rgb(109, 166, 181); /*The colour the links change to when hovered over*/
-
     --footer-color: rgb(128, 128, 128); /*The background colour of the footer*/
     --footer-hover-color: rgb(80, 80, 80);
     --form-color: rgb(178, 178, 178); /*The background colour of form elements*/
     --input-color: rgb(232, 232, 232); /*The background colour of the input elements*/
     --input-focus-color: white; /*The colour of the input when the user is typing*/
     --input-placeholder-color: rgb(104, 104, 104); /*The colour of the placeholder text in an input*/
+    --button-color: grey; /*The primary button colour*/
+    --button-hover-color: rgb(80, 80, 80); 
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -30,8 +31,9 @@ p {
     margin: 1em;
 }
 
-.left {float: left;}
-.right {float: right;}
+.left, [data-float=left] {float: left;}
+.right, [data-float=right] {float: right;}
+.clear, [data-clear=''] {clear: both;}
 .cf::after /*clearfix hack*/ { 
     /*Adds an element which will float below the floating objects, 
     which will cause the navbar to extend to the full height of the elements*/
@@ -103,12 +105,18 @@ input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
 }
 input[type=submit] {
-    
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: var(--button-color);
+    color: white;
 }
 input[type=submit]:hover {
-    background-color: var(--nav-hover-color);
-    color: white;
+    background-color: var(--button-hover-color);
+}
+input[type=reset] {
+    background-color: var(--input-color);
+}
+input[type=reset]:hover {
+    background-color: var(--input-focus-color);
+    
 }
 /*
 form input[type=text]::placeholder {

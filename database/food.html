@@ -20,11 +20,11 @@
         </nav>
         <h1>Fridge</h1>
 
-        <form>
-            <span><!--Will be used to separate different parts of the form-->
+        <form class="cf">
+            <div><!--Will be used to separate different parts of the form-->
                 <label for="name">Name: </label>
                 <input type="text" name="name" id="name">
-            </span><span>
+            </div><div>
                 <label for="qty">Amount: </label>
                 <input type="number" name="qty" id="qty">
                 <select>
@@ -32,14 +32,20 @@
                     <option value="g">g</option>
                     <option value="kg">kg</option>
                     <option value="L">L</option>
+                </select> 
+            </div><div>
+                <label for="added">Date Added: </label>
+                <input type="date" name="added" id="added">
+            </div><div>
+                <select><!--The use by/best before selector-->
+                    <option value="true">Use By</option>
+                    <option value="false">Best Before</option>
                 </select>
-            </span>
-            <br>
-            <label for="added">Date Added: </label>
-            <input type="date" name="added" id="added">
-            <br>
+                <input type="date" name="expiry" id="expiry">
+            </div>
             <input type="submit" value="Add Item">
-            <input type="reset" value="Clear">
+            <input type="reset" value="Clear" data-float="right">
+            
         </form>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
