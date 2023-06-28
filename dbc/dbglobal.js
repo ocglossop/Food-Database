@@ -39,10 +39,20 @@ openRequest.onupgradeneeded = (event) => {
 }
 
 //Reading data for a specific id
-function getItem(key, store, callback) {
+function getItem(key, store, callback = null) {
     const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
     const request = objectStore.get(key); //Selects the chosen key
-
-    request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
-    //Add error handler
+    if (callback) { //Checking if a callback function was specified
+        request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
+    }
+    request.onerror = (event) => console.log(`getItem failed. Error code: ${event.target.errorCode}`);
+}
+//Adding an item to an object store
+function addItem(item, store, callback = null) {
+    const objectStore = db.transaction(store, "readwrite").objectStore(store);
+    const request = objectStore.add(item);
+    if (callback) {
+        request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
+    }
+    request.onerror = (event) => console.log(`addItem failed. Error code: ${event.target.errorCode}`);
 }
