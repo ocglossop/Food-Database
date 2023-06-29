@@ -9,13 +9,13 @@
         <script src="/dbc/dbglobal.js"></script>
         <script>//Processing the contents of the form when submitted
             function submitForm(form) {
-                const item = new Item(
-                    form['name'],
-                    form['qty'],
-                    form['unit'],
-                    form['useBy'],
-                    form['added'],
-                    form['expiry']
+                const item = new Item( //Compiling the input into an 'Item' object
+                    form['name'].value, //Retrieving a value from the form
+                    form['useBy'].value,
+                    form['unit'].value,
+                    form['qty'].value,
+                    form['added'].value,
+                    form['expiry'].value
                 );
                 console.log(item);
                 return false
@@ -40,7 +40,7 @@
                 <input type="text" name="name" id="name">
             </div><div>
                 <label for="qty">Amount: </label>
-                <input type="number" name="qty" id="qty">
+                <input type="number" name="qty" id="qty" min="0">
                 <select id="unit" name="unit">
                     <option value=""></option>
                     <option value="g">g</option>
@@ -52,8 +52,8 @@
                 <input type="date" name="added" id="added">
             </div><div>
                 <select id="useBy" name="useBy"><!--The use by/best before selector-->
-                    <option value="true">Use By</option>
-                    <option value="false">Best Before</option>
+                    <option value=true>Use By</option>
+                    <option value=false>Best Before</option>
                 </select>
                 <input type="date" name="expiry" id="expiry">
             </div>
