@@ -31,10 +31,10 @@ p {
     margin: 1em;
 }
 
-.left, [data-float=left] {float: left;}
+.left, [data-float=left /*The float effect can be applied just by adding an attribute*/] {float: left;}
 .right, [data-float=right] {float: right;}
 .clear, [data-clear=''] {clear: both;}
-.cf::after /*clearfix hack*/ { 
+.cf::after, [data-cf] /*clearfix hack*/ { 
     /*Adds an element which will float below the floating objects, 
     which will cause the navbar to extend to the full height of the elements*/
     content: "";
@@ -100,7 +100,6 @@ input[type=number] {
     text-align: right;
 }
 
-
 input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
 }
@@ -126,6 +125,17 @@ form input[type=text]:focus::placeholder {
     color: white;
 }
 */
+
+section#output {
+    background-color: lightgrey;
+}
+section#output div {
+    margin: 0.5em;
+    padding: 0;
+    background-color: rgb(235, 233, 233);
+    width: 100%;
+    box-sizing: border-box;
+}
 footer {
     padding: 1em;
     background-color: var(--footer-color);
