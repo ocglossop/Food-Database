@@ -18,7 +18,8 @@
                     form['expiry'].value
                 );
                 console.log(item);
-                return false
+                addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
+                return false //Prevents the form from reloading the page
             }
         </script>
     </head>
@@ -59,8 +60,12 @@
             </div>
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
-            
         </form>
+        <section id="output">
+            <div>
+                
+            </div>
+        </section>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
