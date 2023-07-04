@@ -10,6 +10,8 @@
     --input-placeholder-color: rgb(104, 104, 104); /*The colour of the placeholder text in an input*/
     --button-color: grey; /*The primary button colour*/
     --button-hover-color: rgb(80, 80, 80); 
+    --output-color: rgb(109, 166, 181); /*The background colour of the list of items in the fridge/shopping list*/
+    --output-item-color: rgb(232, 232, 232); /*The background colour of each list item*/
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -34,6 +36,7 @@ p {
 .left, [data-float=left /*The float effect can be applied just by adding an attribute*/] {float: left;}
 .right, [data-float=right] {float: right;}
 .clear, [data-clear=''] {clear: both;}
+[data-clear=none] {clear: none;}
 .cf::after, [data-cf] /*clearfix hack*/ { 
     /*Adds an element which will float below the floating objects, 
     which will cause the navbar to extend to the full height of the elements*/
@@ -41,6 +44,7 @@ p {
     clear: both;
     display: table;
 }
+[data-justify=right] {text-justify: right;} /*To justify the text to the right of the element*/
 
 
 nav#main {
@@ -126,16 +130,26 @@ form input[type=text]:focus::placeholder {
 }
 */
 
-section#output {
-    background-color: lightgrey;
+ul#output {
+    list-style-type: none;
+    background-color: var(--output-color);
+    padding: 0.5em;
+    font-size: 1.5rem;
 }
-section#output div {
-    margin: 0.5em;
-    padding: 0;
-    background-color: rgb(235, 233, 233);
+#output li {
+    padding: 0.5em;
+    background-color: var(--output-item-color);
     width: 100%;
     box-sizing: border-box;
+
+    display: grid; /*To make a grid display of the elements inside*/
+    grid-template-columns: auto auto; /*Creates two colums of equal size*/
+    justify-content: space-between; /*The items are spread to the sides of the container*/
 }
+#output input:not([type=submit]) { /*Excludes the submit button from this styling*/
+    background-color: var(--input-focus-color);
+}
+
 footer {
     padding: 1em;
     background-color: var(--footer-color);
