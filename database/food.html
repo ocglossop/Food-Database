@@ -6,7 +6,7 @@
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
-        <script src="/dbc/dbglobal.js"></script>
+        <script src="/dbc/dbglobal.js"></script> <!--Embeds the script for database access into the page-->
         <script>//Processing the contents of the form when submitted
             function submitForm(form) {
                 const item = new Item( //Compiling the input into an 'Item' object
@@ -21,6 +21,11 @@
                 addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
                 return false //Prevents the form from reloading the page
             }
+            function loadItems(items) {
+                console.log('loadItems called')
+                document.getElementById(output).innerHTML = items;
+            };
+            
         </script>
     </head>
     <body>
@@ -61,7 +66,8 @@
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
         </form>
-        <ul id="output">
+
+        <ul id="output"><!--The list of items in the fridge-->
             <li>
                 <div>Milk</div>
                 <div>
@@ -71,7 +77,11 @@
                 <div>Best Before: 08/07/2023</div>
             </li>
         </ul>
-        
+        <script>//Getting the items to display in the list
+            
+            
+        </script>
+
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
                 <ul>

@@ -39,20 +39,31 @@ openRequest.onupgradeneeded = (event) => {
 }
 
 //Reading data for a specific id
-function getItem(key, store, callback = null) {
-    const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
+function getItem(key, store, callback) {
+    const objectStore = db.transaction(store, "readwrite").objectStore(store); //Selects the object store
     const request = objectStore.get(key); //Selects the chosen key
-    if (callback) { //Checking if a callback function was specified
-        request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
-    }
+
+    request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
     request.onerror = (event) => console.log(`getItem failed. Error code: ${event.target.errorCode}`);
+    return
 }
 //Adding an item to an object store
-function addItem(item, store, callback = null) {
+function addItem(item, store, callback) {
     const objectStore = db.transaction(store, "readwrite").objectStore(store);
     const request = objectStore.add(item);
-    if (callback) {
-        request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
-    }
+
+    request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
     request.onerror = (event) => console.log(`addItem failed. Error code: ${event.target.errorCode}`);
+    return
+}
+//Retrieveing all the items in the object store
+function getAllItems(store, callback) {
+    console.log('getAllItems called');
+    const objectStore = db.transaction(store, "readwrite").objectStore(store);
+    console.log('Object Store created');
+    const request = objectStore.getAll(); //Gets an array of all the items in the object store
+    
+    request.onsuccess = (event) => callback(event.target.result);
+    request.onerror = (event) => console.log(`getAllItems failed. Error code: ${event.target.errorCode}`);
+    return
 }
