@@ -8,39 +8,45 @@ function Item(name, useBy = true, unit = '', qty = 0, added, expiry) {
 }
 
 //Opening the database
-let db; //Database
-let dbReady = false;
-
-const openRequest = window.indexedDB.open("FoodDB", 1);
-
-openRequest.onerror = (event) => { //Function to call if the request returns an error
-    console.error(`Request didn't work. Error code: ${event.target.errorCode}`);
-    window.alert("Please check that IndexedDB is enabled for this website.");
+function openDB() {
+    return new Promise((resolve, reject) => { //Creates a promise
+        let db; //Database
+        
+        const openRequest = window.indexedDB.open("FoodDB", 1);
+        
+        openRequest.onerror = (event) => { //Function to call if the request returns an error
+            console.error(`Request didn't work. Error code: ${event.target.errorCode}`);
+            window.alert("Please check that IndexedDB is enabled for this website.");
+            reject(event.target.errorCode); //The promise is rejected
+        }
+        openRequest.onsuccess = (event) => {
+            db = event.target.result; //Stores the instance of the database
+        
+            //General error handler
+            db.onerror = (event) => {
+                console.error(`Error code: ${event.target.errorCode}`);
+            }
+            resolve(db); //The promise is fulfilled with the database instance
+        }
+        //Creating the database
+        openRequest.onupgradeneeded = (event) => {
+            db = event.target.result;
+            //If I need to upgrade the database, I will change this section
+            const foodStore = db.createObjectStore("foodStore", {autoIncrement: true});
+            
+            const recipeStore = db.createObjectStore("recipeStore", {autoIncrement: true});
+        
+            const shoppingList = db.createObjectStore("shoppingList", {autoIncrement: true});
+        }
+    });
 }
-openRequest.onsuccess = (event) => {
-    db = event.target.result; //Stores the instance of the database
 
-    //General error handler
-    db.onerror = (event) => {
-        console.error(`Error code: ${event.target.errorCode}`);
-    }
-    dbReady = true; //Mark that the database is ready to use
-}
-//Creating the database
-openRequest.onupgradeneeded = (event) => {
-    db = event.target.result;
-    //If I need to upgrade the database, I will change this section
-    const foodStore = db.createObjectStore("foodStore", {autoIncrement: true});
-    
-    const recipeStore = db.createObjectStore("recipeStore", {autoIncrement: true});
-
-    const shoppingList = db.createObjectStore("shoppingList", {autoIncrement: true});
-
-}
+let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
 //Reading data for a specific id
-function getItem(key, store, callback) {
-    const objectStore = db.transaction(store, "readwrite").objectStore(store); //Selects the object store
+async function getItem(key, store, callback) { //Async function, as it may have to wait for the database to be opened
+    let db = await dbPromise; //The database object is loaded when it is ready
+    const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
     const request = objectStore.get(key); //Selects the chosen key
 
     request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
@@ -49,7 +55,7 @@ function getItem(key, store, callback) {
 }
 //Adding an item to an object store
 function addItem(item, store, callback) {
-    const objectStore = db.transaction(store, "readwrite").objectStore(store);
+    const objectStore = db.transaction(store, "readonly").objectStore(store);
     const request = objectStore.add(item);
 
     request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
@@ -57,9 +63,10 @@ function addItem(item, store, callback) {
     return
 }
 //Retrieveing all the items in the object store
-function getAllItems(store, callback) {
+async function getAllItems(store, callback) {
+    let db = await dbPromise;
     console.log('getAllItems called');
-    const objectStore = db.transaction(store, "readwrite").objectStore(store);
+    const objectStore = db.transaction(store, "readonly").objectStore(store);
     console.log('Object Store created');
     const request = objectStore.getAll(); //Gets an array of all the items in the object store
     
