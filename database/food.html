@@ -22,8 +22,19 @@
                 return false //Prevents the form from reloading the page
             }
             function loadItems(items) {
-                console.log('loadItems called')
-                document.getElementById(output).innerHTML = items;
+                let list = ['test'];
+                items.forEach(item => {
+                    //Creating a list item    
+                    list.push(`<li>
+                            <div>${item.name}</div>
+                            <div>
+                                <span data-float='right'><input type='number' min='0' max='${item.qty}'>/${item.qty}${item.unit} <input type='submit' value='Use'></span>
+                            </div>
+                            <div>Added: ${item.added}</div>
+                            <div>Best Before: ${item.expiry}</div>
+                        </li>`)
+                    });
+                document.getElementById('output').innerHTML = list;
             };
             
         </script>
@@ -78,8 +89,7 @@
             </li>
         </ul>
         <script>//Getting the items to display in the list
-            
-            
+            getAllItems('foodStore', loadItems)
         </script>
 
         <footer class="cf include-html" data-include-src="/c/footer.html">
