@@ -33,7 +33,11 @@ function openDB() {
             db = event.target.result;
             //If I need to upgrade the database, I will change this section
             const foodStore = db.createObjectStore("foodStore", {autoIncrement: true});
-            
+            foodStore.transaction.oncomplete = (event) => {
+                const foodStore = db.transaction("food", "readwrite").objectStore("food"); //Creates a transaction
+                foodStore.add("test");
+                console.log('data added');
+            };
             const recipeStore = db.createObjectStore("recipeStore", {autoIncrement: true});
         
             const shoppingList = db.createObjectStore("shoppingList", {autoIncrement: true});
@@ -54,8 +58,9 @@ async function getItem(key, store, callback) { //Async function, as it may have 
     return
 }
 //Adding an item to an object store
-function addItem(item, store, callback) {
-    const objectStore = db.transaction(store, "readonly").objectStore(store);
+async function addItem(item, store, callback = null) {
+    let db = await dbPromise;
+    const objectStore = db.transaction(store, "readwrite").objectStore(store);
     const request = objectStore.add(item);
 
     request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
@@ -65,12 +70,19 @@ function addItem(item, store, callback) {
 //Retrieveing all the items in the object store
 async function getAllItems(store, callback) {
     let db = await dbPromise;
-    console.log('getAllItems called');
     const objectStore = db.transaction(store, "readonly").objectStore(store);
-    console.log('Object Store created');
     const request = objectStore.getAll(); //Gets an array of all the items in the object store
     
-    request.onsuccess = (event) => callback(event.target.result);
+    request.onsuccess = (event) => {callback(event.target.result)};
     request.onerror = (event) => console.log(`getAllItems failed. Error code: ${event.target.errorCode}`);
     return
+}
+//Updating an entry
+async function updateItem(key, item, store, callback = null) {
+    let db = await dbPromise;
+    const objectStore = db.transaction(store, "readwrite").objectStore(store);
+    const request = objectStore.put(item, key); //Puts the new item in at the specified key
+
+    request.onsuccess = (event) => {callback(event.target.result)};
+    request.onerror = (event) => console.log(`updateItem failed. Error code: ${event.target.errorCode}`);
 }
