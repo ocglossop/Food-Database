@@ -79,7 +79,7 @@ nav ul li a:hover { /*When a button is hovered over*/
 }
 
 /*Form elements*/
-form {
+form:not(.none) {
     background-color: var(--form-color);
     margin: auto;
     padding: 0.5em;

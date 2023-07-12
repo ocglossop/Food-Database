@@ -22,20 +22,23 @@
                 return false //Prevents the form from reloading the page
             }
             function loadItems(items) {
-                let list = ['test'];
-                items.forEach(item => {
+                const list = [];
+                for(x in items) {
+                    item = items[x]
                     //Creating a list item    
                     list.push("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
-                                "<span data-float='right'><input type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'></span>" +
+                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+")'><input type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added: "+item.added+"</div>" +
                             "<div>Best Before: "+item.expiry+"</div>" +
                         "</li>");
                 document.getElementById('output').innerHTML = list;
-            });
-        }
+            }};
+            function useItem(index) {
+                console.log(index); //Decrementing the amount of items
+            }
         </script>
     </head>
     <body>
