@@ -48,14 +48,24 @@ function openDB() {
 let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
 //Reading data for a specific id
-async function getItem(key, store, callback) { //Async function, as it may have to wait for the database to be opened
-    let db = await dbPromise; //The database object is loaded when it is ready
-    const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
-    const request = objectStore.get(key); //Selects the chosen key
+function getItem(key, store, callback = null) { 
+    return new Promise(async (resolve, reject) => { //Async function, as it may have to wait for the database to be opened
+        let db = await dbPromise; //The database object is loaded when it is ready
+        const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
+        const request = objectStore.get(key); //Selects the chosen key
 
-    request.onsuccess = (event) => callback(event.target.result); //Calls the function specified 
-    request.onerror = (event) => console.log(`getItem failed. Error code: ${event.target.errorCode}`);
-    return
+        
+        request.onsuccess = (event) => {
+            if (callback) { //Checking if a callback function is specified
+                callback(event.target.result); //Calls the function specified
+            }
+            resolve(event.target.result);
+        }
+        request.onerror = (event) => {
+            console.log(`getItem failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+    })
 }
 //Adding an item to an object store
 async function addItem(item, store, callback = null) {
@@ -63,7 +73,9 @@ async function addItem(item, store, callback = null) {
     const objectStore = db.transaction(store, "readwrite").objectStore(store);
     const request = objectStore.add(item);
 
-    request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
+    if (callback) { 
+        request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
+    }
     request.onerror = (event) => console.log(`addItem failed. Error code: ${event.target.errorCode}`);
     return
 }
@@ -80,7 +92,6 @@ async function getAllItems(store, callback) {
             list[cursor.key] = cursor.value; //Add the object and its key to an array
             cursor.continue(); //Goes to the next item
         } else { //When there are no items left
-            console.log(list);
             callback(list);
         } 
     };
@@ -89,10 +100,40 @@ async function getAllItems(store, callback) {
 }
 //Updating an entry
 async function updateItem(key, item, store, callback = null) {
-    let db = await dbPromise;
-    const objectStore = db.transaction(store, "readwrite").objectStore(store);
-    const request = objectStore.put(item, key); //Puts the new item in at the specified key
+    return new Promise(async (resolve, reject) => {    
+        let db = await dbPromise;
+        const objectStore = db.transaction(store, "readwrite").objectStore(store);
+        const request = objectStore.put(item, key); //Puts the new item in at the specified key
 
-    request.onsuccess = (event) => {callback(event.target.result)};
-    request.onerror = (event) => console.log(`updateItem failed. Error code: ${event.target.errorCode}`);
+        request.onsuccess = (event) => {
+            if (callback) { 
+                callback(event.target.result); 
+            }
+            resolve(event.target.result);
+        }
+        request.onerror = (event) => {
+            console.log(`updateItem failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+    });
+}
+
+//Removing an entry
+function removeItem(key, store, callback = null) { 
+    return new Promise(async (resolve, reject) => { 
+        let db = await dbPromise; 
+        const objectStore = db.transaction(store, "readwrite").objectStore(store); 
+        const request = objectStore.delete(key); //Deletes the item
+        
+        request.onsuccess = (event) => {
+            if (callback) { 
+                callback(event.target.result); 
+            }
+            resolve(event.target.result);
+        }
+        request.onerror = (event) => {
+            console.log(`removeItem failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+    })
 }

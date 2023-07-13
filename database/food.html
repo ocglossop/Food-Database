@@ -29,15 +29,26 @@
                     list.push("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
-                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+")'><input type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'></form>" +
+                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)'><input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added: "+item.added+"</div>" +
                             "<div>Best Before: "+item.expiry+"</div>" +
                         "</li>");
                 document.getElementById('output').innerHTML = list;
             }};
-            function useItem(index) {
-                console.log(index); //Decrementing the amount of items
+            async function useItem(key, form) { //Decrementing the amount of items
+                console.log(key); 
+                
+                const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
+                item.qty -= form['qty'].value; //Subtracting the amount used
+                if (item.qty <= 0) { //If all of the item has been used
+                    await removeItem(key, 'foodStore'); //Remove the item
+                    getAllItems('foodStore', loadItems); //Updates the list
+                } else { //If some of the item is still left
+                    await updateItem(key, item, 'foodStore');
+                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'>"
+                        //Updates the page
+                }
             }
         </script>
     </head>
