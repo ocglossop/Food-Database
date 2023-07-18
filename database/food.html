@@ -9,14 +9,14 @@
         <script src="/dbc/dbglobal.js"></script> <!--Embeds the script for database access into the page-->
         <script>//Processing the contents of the form when submitted
             function submitForm(form) {
-                const item = new Item( //Compiling the input into an 'Item' object
-                    form['name'].value, //Retrieving a value from the form
-                    form['useBy'].value,
-                    form['unit'].value,
-                    form['qty'].value,
-                    form['added'].value,
-                    form['expiry'].value
-                );
+                const item = { //Compiling the input into an object
+                    name:form['name'].value, //Retrieving a value from the form
+                    useBy:form['useBy'].value,
+                    unit:form['unit'].value,
+                    qty:form['qty'].value,
+                    added:form['added'].value,
+                    expiry:form['expiry'].value
+                };
                 console.log(item);
                 addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
                 return false //Prevents the form from reloading the page
@@ -92,14 +92,7 @@
         </form>
 
         <ul id="output"><!--The list of items in the fridge-->
-            <li>
-                <div>Milk</div>
-                <div>
-                    <span data-float="right"><input type="number" min="0" max="4">/4L <input type="submit" value="Use"></span>
-                </div>
-                <div>Added: 05/07/2023</div>
-                <div>Best Before: 08/07/2023</div>
-            </li>
+            <!--Todo: indicate that the list is loading-->
         </ul>
         <script>//Getting the items to display in the list
             getAllItems('foodStore', loadItems)
