@@ -6,6 +6,18 @@
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script src="/dbc/dbglobal.js"></script>
+        <script>
+            function submitForm(form) {
+                const item = {
+                    name:form['name'].value,
+                    qty:form['qty'].value,
+                    unit:form['unit'].value
+                }
+                addItem(item, 'shoppingList', console.log);
+                return false
+            }
+        </script>
     </head>
     <body>
         <nav id="main" class="cf include-html" data-include-src="/c/navbar.html">
@@ -18,6 +30,29 @@
             </ul>
         </nav>
         <h1>Shopping List</h1>
+        <form class="cf" onsubmit="event.preventDefault(); submitForm(this)">
+            <div><!--Will be used to separate different parts of the form-->
+                <label for="name">Name: </label>
+                <input type="text" name="name" id="name">
+            </div><div>
+                <label for="qty">Amount: </label>
+                <input type="number" name="qty" id="qty" min="0">
+                <select id="unit" name="unit">
+                    <option value=""></option>
+                    <option value="g">g</option>
+                    <option value="kg">kg</option>
+                    <option value="L">L</option>
+                </select> 
+            </div>
+            <input type="submit" value="Add Item">
+            <input type="reset" value="Clear" data-float="right">
+        </form>
+
+        <ul id="output"><!--The list of items in the fridge-->
+            <li>
+                
+            </li>
+        </ul>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
