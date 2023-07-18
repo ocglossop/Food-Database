@@ -33,11 +33,7 @@ function openDB() {
             db = event.target.result;
             //If I need to upgrade the database, I will change this section
             const foodStore = db.createObjectStore("foodStore", {autoIncrement: true});
-            foodStore.transaction.oncomplete = (event) => {
-                const foodStore = db.transaction("food", "readwrite").objectStore("food"); //Creates a transaction
-                foodStore.add("test");
-                console.log('data added');
-            };
+            
             const recipeStore = db.createObjectStore("recipeStore", {autoIncrement: true});
         
             const shoppingList = db.createObjectStore("shoppingList", {autoIncrement: true});
