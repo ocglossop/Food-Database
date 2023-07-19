@@ -15,8 +15,16 @@
                     unit:form['unit'].value
                 }
                 addItem(item, 'shoppingList', console.log);
-                return false
+                return false 
             }
+            function loadItems(items) {
+                const list = [];
+                for(x in items) {
+                    item = items[x]
+                    //Creating a list item    
+                    list.push();
+                document.getElementById('output').innerHTML = list;
+            }};
         </script>
     </head>
     <body>
@@ -50,7 +58,10 @@
 
         <ul id="output"><!--The list of items in the fridge-->
             <li>
-                
+                <div>Milk</div>
+                <div>
+                    2L <button onclick="">Remove</button>
+                </div>
             </li>
         </ul>
         
