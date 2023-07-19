@@ -89,7 +89,7 @@ label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5em;
 }
-input, select { /*Applies to all input elements*/
+input, select, button { /*Applies to all input elements*/
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     
@@ -107,17 +107,18 @@ input[type=number] {
 input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
 }
-input[type=submit] {
+/*Style for buttons*/
+input[type=submit], button[data-type=major] {
     background-color: var(--button-color);
     color: white;
 }
-input[type=submit]:hover {
+input[type=submit]:hover, button[data-type=major]:hover {
     background-color: var(--button-hover-color);
 }
-input[type=reset] {
+input[type=reset], button[data-type=minor] {
     background-color: var(--input-color);
 }
-input[type=reset]:hover {
+input[type=reset]:hover, button[data-type=minor]:hover {
     background-color: var(--input-focus-color);
     
 }
@@ -135,6 +136,9 @@ ul#output {
     background-color: var(--output-color);
     padding: 0.5em;
     font-size: 1.5rem;
+
+    max-width: 600px;
+    margin: auto;
 }
 #output li {
     padding: 0.5em;
@@ -145,6 +149,8 @@ ul#output {
     display: grid; /*To make a grid display of the elements inside*/
     grid-template-columns: auto auto; /*Creates two colums of equal size*/
     justify-content: space-between; /*The items are spread to the sides of the container*/
+
+    gap: 0.6em; /*Adds gaps between the grid items*/
 }
 #output input:not([type=submit]) { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
