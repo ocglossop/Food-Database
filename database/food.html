@@ -32,7 +32,7 @@
                                 "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)'><input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added: "+item.added+"</div>" +
-                            "<div>Best Before: "+item.expiry+"</div>" +
+                            "<div>"+ (item.useBy == 'true' ? 'Use By: ' : 'Best Before: ') +item.expiry+"</div>" +
                         "</li>");
                 document.getElementById('output').innerHTML = list;
             }};
