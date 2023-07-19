@@ -95,7 +95,7 @@ async function getAllItems(store, callback) {
     return
 }
 //Updating an entry
-async function updateItem(key, item, store, callback = null) {
+function updateItem(key, item, store, callback = null) {
     return new Promise(async (resolve, reject) => {    
         let db = await dbPromise;
         const objectStore = db.transaction(store, "readwrite").objectStore(store);
