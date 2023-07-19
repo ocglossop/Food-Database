@@ -37,8 +37,6 @@
                 document.getElementById('output').innerHTML = list;
             }};
             async function useItem(key, form) { //Decrementing the amount of items
-                console.log(key); 
-                
                 const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
                 item.qty -= form['qty'].value; //Subtracting the amount used
                 if (item.qty <= 0) { //If all of the item has been used
