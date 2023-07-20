@@ -21,7 +21,8 @@
                 addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
                 return false //Prevents the form from reloading the page
             }
-            function loadItems(items) {
+            async function loadItems() {
+                const items = await getAllItems('foodStore'); //Instead of having this function as a callback, I am using async/await
                 const list = [];
                 for(x in items) {
                     item = items[x]
@@ -41,7 +42,7 @@
                 item.qty -= form['qty'].value; //Subtracting the amount used
                 if (item.qty <= 0) { //If all of the item has been used
                     await removeItem(key, 'foodStore'); //Remove the item
-                    getAllItems('foodStore', loadItems); //Updates the list
+                    loadItems(); //Updates the list
                 } else { //If some of the item is still left
                     await updateItem(key, item, 'foodStore');
                     form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'>"
@@ -93,7 +94,7 @@
             <!--Todo: indicate that the list is loading-->
         </ul>
         <script>//Getting the items to display in the list
-            getAllItems('foodStore', loadItems)
+            loadItems();
         </script>
 
         <footer class="cf include-html" data-include-src="/c/footer.html">
