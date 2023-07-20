@@ -76,23 +76,28 @@ async function addItem(item, store, callback = null) {
     return
 }
 //Retrieveing all the items in the object store
-async function getAllItems(store, callback) {
-    let db = await dbPromise;
-    let list = {};
-    const objectStore = db.transaction(store, "readonly").objectStore(store);
-    const request = objectStore.openCursor(); //Creates a cursor to iterate through each item
-    
-    request.onsuccess = (event) => {
-        const cursor = event.target.result; //Stores the cursor object
-        if (cursor) {
-            list[cursor.key] = cursor.value; //Add the object and its key to an array
-            cursor.continue(); //Goes to the next item
-        } else { //When there are no items left
-            callback(list);
-        } 
-    };
-    request.onerror = (event) => console.log(`getAllItems failed. Error code: ${event.target.errorCode}`);
-    return
+function getAllItems(store) {
+    return new Promise(async (resolve, reject) => {
+        let db = await dbPromise;
+        let list = {};
+        const objectStore = db.transaction(store, "readonly").objectStore(store);
+        const request = objectStore.openCursor(); //Creates a cursor to iterate through each item
+        
+        request.onsuccess = (event) => {
+            const cursor = event.target.result; //Stores the cursor object
+            if (cursor) {
+                list[cursor.key] = cursor.value; //Add the object and its key to an array
+                cursor.continue(); //Goes to the next item
+            } else { //When there are no items left
+                resolve(list);
+            } 
+        };
+        request.onerror = (event) => {
+            console.log(`getAllItems failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+        return
+    })
 }
 //Updating an entry
 function updateItem(key, item, store, callback = null) {
