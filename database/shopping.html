@@ -17,14 +17,25 @@
                 addItem(item, 'shoppingList', console.log);
                 return false 
             }
-            function loadItems(items) {
+            async function loadItems() {
+                const items = await getAllItems("shoppingList");
                 const list = [];
                 for(x in items) {
                     item = items[x]
                     //Creating a list item    
-                    list.push();
+                    list.push(
+                    "<li>" +
+                        "<div>"+item.name+"</div>" +
+                        "<div>" +
+                            item.qty+item.unit+" <button data-type='major' onclick='check("+x+")'>Remove</button>" +
+                        "</div>" +
+                    "</li>");
                 document.getElementById('output').innerHTML = list;
             }};
+            async function check(key) { //Removing an item from the list
+                await removeItem(key, 'shoppingList');
+                loadItems(); //Refresh the list once complete
+            }
         </script>
     </head>
     <body>
@@ -64,6 +75,9 @@
                 </div>
             </li>
         </ul>
+        <script>
+            loadItems();
+        </script>
         
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
