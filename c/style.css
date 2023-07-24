@@ -84,6 +84,9 @@ form:not(.none) {
     margin: auto;
     padding: 0.5em;
     line-height: 1.6; /*To add spacing between the lines*/
+
+    max-width: 600px;
+    box-sizing: border-box;
 }
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -122,6 +125,17 @@ input[type=reset]:hover, button[data-type=minor]:hover {
     background-color: var(--input-focus-color);
     
 }
+form textarea {
+    font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    
+    box-sizing: border-box;
+
+    background-color: var(--input-color);
+    border: none;
+
+    width: 100%; /*The textbox fills the width of the page*/
+}
 /*
 form input[type=text]::placeholder {
     color: var(--input-placeholder-color);
@@ -137,7 +151,8 @@ ul#output {
     padding: 0.5em;
     font-size: 1.5rem;
 
-    max-width: 600px;
+    box-sizing: border-box;
+    max-width: 600px; /*The output list will be no larger than this width*/
     margin: auto;
 }
 #output li {
