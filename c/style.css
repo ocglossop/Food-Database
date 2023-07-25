@@ -78,14 +78,21 @@ nav ul li a:hover { /*When a button is hovered over*/
     color: white;
 }
 
+.grid-2 { /*A grid with two columns*/
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: start;
+}
+
 /*Form elements*/
 form:not(.none) {
     background-color: var(--form-color);
     margin: auto;
-    padding: 0.5em;
+    padding: 1.0rem;
     line-height: 1.6; /*To add spacing between the lines*/
 
-    max-width: 600px;
+    width: 100%; /*If the form takes up less space than 900px, it will fill the entire area*/
+    max-width: 900px;
     box-sizing: border-box;
 }
 label {
@@ -134,7 +141,9 @@ form textarea {
     background-color: var(--input-color);
     border: none;
 
-    width: 100%; /*The textbox fills the width of the page*/
+    width: 100%; /*The textbox fills the width of the column*/
+    resize: vertical; /*The user can only change the height vertically, not horizontally*/
+    height: 9rem;
 }
 /*
 form input[type=text]::placeholder {
@@ -152,7 +161,7 @@ ul#output {
     font-size: 1.5rem;
 
     box-sizing: border-box;
-    max-width: 600px; /*The output list will be no larger than this width*/
+    max-width: 900px; /*The output list will be no larger than this width*/
     margin: auto;
 }
 #output li {

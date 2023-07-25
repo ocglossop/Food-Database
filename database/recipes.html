@@ -6,6 +6,36 @@
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script>
+            function submitForm(form) {
+                const item = {
+                    name:form['name'].value,
+                    qty:form['qty'].value,
+                    unit:form['unit'].value
+                }
+                //addItem(item, 'recipeStore', console.log);
+                return false 
+            }
+            async function loadItems() {
+                const items = /*await getAllItems("recipeStore");*/[];
+                const list = [];
+                for(x in items) {
+                    item = items[x]
+                    //Creating a list item    
+                    list.push(
+                    "<li>" +
+                        "<div>"+item.name+"</div>" +
+                        "<div>" +
+                            item.qty+item.unit+" <button data-type='major' onclick='check("+x+")'>Remove</button>" +
+                        "</div>" +
+                    "</li>");
+                document.getElementById('output').innerHTML = list;
+            }};
+            async function check(key) { //Removing an item from the list
+                await removeItem(key, 'shoppingList');
+                loadItems(); //Refresh the list once complete
+            }
+        </script>
     </head>
     <body>
         <nav id="main" class="cf include-html" data-include-src="/c/navbar.html">
@@ -18,11 +48,41 @@
             </ul>
         </nav>
         <h1>Recipes</h1>
-        <form>
-            <label for="recipe-editor">Recipe</label>
-            <textarea id="recipe-editor"></textarea>
-        </form>
-        
+        <div data-cf class="grid-2"><!--Container for the recipe editor and ingredient list-->
+            <div>
+                <form>
+                    <label for="recipe-editor">Recipe</label>
+                    <textarea id="recipe-editor"></textarea>
+                </form>
+            </div><div>
+                <form onsubmit="event.preventDefault();" data-cf>
+                    <div><!--Will be used to separate different parts of the form-->
+                        <label for="name">Name: </label>
+                        <input type="text" name="name" id="name">
+                    </div><div>
+                        <label for="qty">Amount: </label>
+                        <input type="number" name="qty" id="qty" min="0">
+                        <select id="unit" name="unit">
+                            <option value=""></option>
+                            <option value="g">g</option>
+                            <option value="kg">kg</option>
+                            <option value="L">L</option>
+                        </select> 
+                    </div>
+                    <input type="submit" value="Add Item">
+                    <input type="reset" value="Clear" data-float="right">
+                </form>
+
+                <ul id="output"><!--The list of items in the fridge-->
+                    <li>
+                        <div>Milk</div>
+                        <div>
+                            2L <button data-type=major onclick="">Remove</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
                 <ul>
