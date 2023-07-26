@@ -9,35 +9,47 @@
         <script src="/dbc/dbglobal.js"></script>
         <script>
             let key = 1; //This will be changed later
-            let recipe = 
+            let recipePromise = getItem(key, 'recipeStore');
+            var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
+            var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
             
             async function loadItems() {
-                const items = await recipe.ingredients;
+                recipe = await recipePromise; //Loads the recipe variable
+                const items = recipe.ingredients;
+                
                 const list = [];
                 for(x in items) {
                     item = items[x]
-                    //Creating a list item    
-                    list.push(
-                    "<li>" +
-                        "<div>"+item.name+"</div>" +
-                        "<div>" +
-                            item.qty+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
-                        "</div>" +
-                    "</li>");
+                       
+                    if (item) { //Checking if the value is undefined
+                        list.push(
+                        "<li>" +
+                            "<div>"+item.name+"</div>" +
+                            "<div>" +
+                                item.qty+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
+                            "</div>" +
+                        "</li>");
+                    }
                 document.getElementById('output').innerHTML = list;
+                ready = true; //Marks that removeItem can be called again
             }};
             async function addIngredient(form) {
+                await recipePromise; //Wait for the recipe to be loaded
                 const item = {
                     name:form['name'].value,
                     qty:form['qty'].value,
                     unit:form['unit'].value
                 }
-                await recipe.ingredients.push(item); //Adds the item to the list of ingredients.
-                await updateItem()
+                recipe.ingredients.push(item); //Adds the item to the list of ingredients.
+                await updateItem(key, recipe, 'recipeStore'); //Wait until the item is added
+                loadItems(); //Reload the list of ingredients
                 return false 
             }
-            async function removeIngredient(id) { //Removing an item from the list
-                
+            async function removeIngredient(index) { //Removing an item from the list
+                if (ready) { //Makes sure that the list is reloaded before more elements are removed
+                    ready = false; //This function can not be called again until 
+                    recipe.ingredients.splice(index, 1); //Removes the item from the array without leaving an empty space.
+                } //The 'ready' variable will be set again by the loadItems function
             }
         </script>
     </head>
@@ -59,7 +71,7 @@
                     <textarea id="recipe-editor"></textarea>
                 </form>
             </div><div>
-                <form onsubmit="event.preventDefault(); " data-cf>
+                <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
                     <div><!--Will be used to separate different parts of the form-->
                         <label for="name">Name: </label>
                         <input type="text" name="name" id="name">
@@ -87,7 +99,7 @@
                 </ul>
             </div>
             <script>
-                
+                loadItems();
             </script>
         </div>
         <footer class="cf include-html" data-include-src="/c/footer.html">
