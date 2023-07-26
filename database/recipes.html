@@ -6,18 +6,13 @@
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script src="/dbc/dbglobal.js"></script>
         <script>
-            function submitForm(form) {
-                const item = {
-                    name:form['name'].value,
-                    qty:form['qty'].value,
-                    unit:form['unit'].value
-                }
-                //addItem(item, 'recipeStore', console.log);
-                return false 
-            }
+            let key = 1; //This will be changed later
+            let recipe = 
+            
             async function loadItems() {
-                const items = /*await getAllItems("recipeStore");*/[];
+                const items = await recipe.ingredients;
                 const list = [];
                 for(x in items) {
                     item = items[x]
@@ -26,14 +21,23 @@
                     "<li>" +
                         "<div>"+item.name+"</div>" +
                         "<div>" +
-                            item.qty+item.unit+" <button data-type='major' onclick='check("+x+")'>Remove</button>" +
+                            item.qty+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
                         "</div>" +
                     "</li>");
                 document.getElementById('output').innerHTML = list;
             }};
-            async function check(key) { //Removing an item from the list
-                await removeItem(key, 'shoppingList');
-                loadItems(); //Refresh the list once complete
+            async function addIngredient(form) {
+                const item = {
+                    name:form['name'].value,
+                    qty:form['qty'].value,
+                    unit:form['unit'].value
+                }
+                await recipe.ingredients.push(item); //Adds the item to the list of ingredients.
+                await updateItem()
+                return false 
+            }
+            async function removeIngredient(id) { //Removing an item from the list
+                
             }
         </script>
     </head>
@@ -55,7 +59,7 @@
                     <textarea id="recipe-editor"></textarea>
                 </form>
             </div><div>
-                <form onsubmit="event.preventDefault();" data-cf>
+                <form onsubmit="event.preventDefault(); " data-cf>
                     <div><!--Will be used to separate different parts of the form-->
                         <label for="name">Name: </label>
                         <input type="text" name="name" id="name">
@@ -82,6 +86,9 @@
                     </li>
                 </ul>
             </div>
+            <script>
+                
+            </script>
         </div>
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
