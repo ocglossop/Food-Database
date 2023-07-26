@@ -9,12 +9,16 @@
         <script src="/dbc/dbglobal.js"></script>
         <script>
             let key = 1; //This will be changed later
-            let recipePromise = getItem(key, 'recipeStore');
             var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
             var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
+
+            async function getRecipe() {
+                
+            }
+            
             
             async function loadItems() {
-                recipe = await recipePromise; //Loads the recipe variable
+                await recipePromise; 
                 const items = recipe.ingredients;
                 
                 const list = [];
@@ -49,6 +53,10 @@
                 if (ready) { //Makes sure that the list is reloaded before more elements are removed
                     ready = false; //This function can not be called again until 
                     recipe.ingredients.splice(index, 1); //Removes the item from the array without leaving an empty space.
+                    console.log(recipe.ingredients);
+
+                    await updateItem(key, recipe, 'recipeStore');
+                    loadItems();
                 } //The 'ready' variable will be set again by the loadItems function
             }
         </script>
