@@ -8,7 +8,7 @@
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script> <!--Embeds the script for database access into the page-->
         <script>//Processing the contents of the form when submitted
-            function submitForm(form) {
+            async function submitForm(form) {
                 const item = { //Compiling the input into an object
                     name:form['name'].value, //Retrieving a value from the form
                     useBy:form['useBy'].value,
@@ -18,7 +18,8 @@
                     expiry:form['expiry'].value
                 };
                 console.log(item);
-                addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
+                await addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
+                loadItems(); //Refreshes the list after an item is added
                 return false //Prevents the form from reloading the page
             }
             async function loadItems() {
@@ -35,8 +36,9 @@
                             "<div>Added: "+item.added+"</div>" +
                             "<div>"+ (item.useBy == 'true' ? 'Use By: ' : 'Best Before: ') +item.expiry+"</div>" +
                         "</li>");
+                }
                 document.getElementById('output').innerHTML = list;
-            }};
+            };
             async function useItem(key, form) { //Decrementing the amount of items
                 const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
                 item.qty -= form['qty'].value; //Subtracting the amount used

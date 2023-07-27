@@ -8,20 +8,21 @@
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script>
         <script>
-            function submitForm(form) {
+            async function submitForm(form) {
                 const item = {
                     name:form['name'].value,
                     qty:form['qty'].value,
                     unit:form['unit'].value
                 }
-                addItem(item, 'shoppingList', console.log);
+                await addItem(item, 'shoppingList', console.log);
+                loadItems();
                 return false 
             }
             async function loadItems() {
                 const items = await getAllItems("shoppingList");
                 const list = [];
                 for(x in items) {
-                    item = items[x]
+                    item = items[x];
                     //Creating a list item    
                     list.push(
                     "<li>" +
@@ -30,8 +31,9 @@
                             item.qty+item.unit+" <button data-type='major' onclick='check("+x+")'>Remove</button>" +
                         "</div>" +
                     "</li>");
+                };
                 document.getElementById('output').innerHTML = list;
-            }};
+            };
             async function check(key) { //Removing an item from the list
                 await removeItem(key, 'shoppingList');
                 loadItems(); //Refresh the list once complete
