@@ -6,12 +6,11 @@ function Item(name, useBy = true, unit = '', qty = 0, added, expiry) {
     this.added = added; //The date the food was added
     this.expiry = expiry; //The expiry date of the food
 }
+var db; //This global variable will hold the database object
 
 //Opening the database
 function openDB() {
     return new Promise((resolve, reject) => { //Creates a promise
-        let db; //Database
-        
         const openRequest = window.indexedDB.open("FoodDB", 1);
         
         openRequest.onerror = (event) => { //Function to call if the request returns an error
@@ -46,7 +45,7 @@ let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' vari
 //Reading data for a specific id
 function getItem(key, store, callback = null) { 
     return new Promise(async (resolve, reject) => { //Async function, as it may have to wait for the database to be opened
-        let db = await dbPromise; //The database object is loaded when it is ready
+        await dbPromise; //The function continues when the database object is ready
         const objectStore = db.transaction(store, "readonly").objectStore(store); //Selects the object store
         const request = objectStore.get(key); //Selects the chosen key
 
@@ -65,7 +64,7 @@ function getItem(key, store, callback = null) {
 }
 //Adding an item to an object store
 async function addItem(item, store, callback = null) {
-    let db = await dbPromise;
+    await dbPromise;
     const objectStore = db.transaction(store, "readwrite").objectStore(store);
     const request = objectStore.add(item);
 
@@ -78,7 +77,7 @@ async function addItem(item, store, callback = null) {
 //Retrieveing all the items in the object store
 function getAllItems(store) {
     return new Promise(async (resolve, reject) => {
-        let db = await dbPromise;
+        await dbPromise;
         let list = {};
         const objectStore = db.transaction(store, "readonly").objectStore(store);
         const request = objectStore.openCursor(); //Creates a cursor to iterate through each item
@@ -102,7 +101,7 @@ function getAllItems(store) {
 //Updating an entry
 function updateItem(key, item, store, callback = null) {
     return new Promise(async (resolve, reject) => {    
-        let db = await dbPromise;
+        await dbPromise;
         const objectStore = db.transaction(store, "readwrite").objectStore(store);
         const request = objectStore.put(item, key); //Puts the new item in at the specified key
 
@@ -122,7 +121,7 @@ function updateItem(key, item, store, callback = null) {
 //Removing an entry
 function removeItem(key, store, callback = null) { 
     return new Promise(async (resolve, reject) => { 
-        let db = await dbPromise; 
+        await dbPromise; 
         const objectStore = db.transaction(store, "readwrite").objectStore(store); 
         const request = objectStore.delete(key); //Deletes the item
         
