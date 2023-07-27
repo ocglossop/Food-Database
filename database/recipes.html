@@ -12,31 +12,39 @@
             var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
             var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
 
-            async function getRecipe() {
-                
+            async function getRecipe() { 
+                recipe = await getItem(key, 'recipeStore');
             }
-            
+            recipePromise = getRecipe(); //recipePromise holds a promise which is fulfilled when getRecipe is complete
             
             async function loadItems() {
                 await recipePromise; 
                 const items = recipe.ingredients;
                 
                 const list = [];
-                for(x in items) {
-                    item = items[x]
-                       
-                    if (item) { //Checking if the value is undefined
-                        list.push(
-                        "<li>" +
-                            "<div>"+item.name+"</div>" +
-                            "<div>" +
-                                item.qty+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
-                            "</div>" +
-                        "</li>");
+                if (items.length) { //Checking if there are items in the array
+                    for(x in items) {
+                        item = items[x]
+                        
+                        if (item) { //Checking if the value is undefined
+                            list.push(
+                            "<li>" +
+                                "<div>"+item.name+"</div>" +
+                                "<div>" +
+                                    item.qty+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
+                                "</div>" +
+                            "</li>");
+                        }
                     }
+                }
                 document.getElementById('output').innerHTML = list;
                 ready = true; //Marks that removeItem can be called again
-            }};
+            };
+            async function loadText() { //Loading the text from the database
+                await recipePromise;
+                document.getElementById('recipe-editor').innerHTML = recipe.text;
+            }
+
             async function addIngredient(form) {
                 await recipePromise; //Wait for the recipe to be loaded
                 const item = {
@@ -59,6 +67,12 @@
                     loadItems();
                 } //The 'ready' variable will be set again by the loadItems function
             }
+            
+            async function saveText(form) {
+                await recipePromise;
+                recipe.text = form['text'].value; //Gets the text from the form
+                updateItem(key, recipe, 'recipeStore');
+            }
         </script>
     </head>
     <body>
@@ -74,9 +88,11 @@
         <h1>Recipes</h1>
         <div data-cf class="grid-2"><!--Container for the recipe editor and ingredient list-->
             <div>
-                <form>
+                <form onsubmit="event.preventDefault(); saveText(this)">
                     <label for="recipe-editor">Recipe</label>
-                    <textarea id="recipe-editor"></textarea>
+                    <textarea id="recipe-editor" name="text"></textarea>
+                    <input type="submit" value="Save">
+                    <input type="reset" value="Clear">
                 </form>
             </div><div>
                 <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
@@ -98,16 +114,12 @@
                 </form>
 
                 <ul id="output"><!--The list of items in the fridge-->
-                    <li>
-                        <div>Milk</div>
-                        <div>
-                            2L <button data-type=major onclick="">Remove</button>
-                        </div>
-                    </li>
+                    <!--Add loading animation-->
                 </ul>
             </div>
             <script>
                 loadItems();
+                loadText();
             </script>
         </div>
         <footer class="cf include-html" data-include-src="/c/footer.html">
