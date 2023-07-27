@@ -92,7 +92,7 @@
                     <label for="recipe-editor">Recipe</label>
                     <textarea id="recipe-editor" name="text"></textarea>
                     <input type="submit" value="Save">
-                    <input type="reset" value="Clear">
+                    <input type="reset" value="Clear"  onclick="document.getElementById('recipe-editor').innerHTML = '';">
                 </form>
             </div><div>
                 <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
