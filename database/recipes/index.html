@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Recipes - Food Database</title> <!--The title that appears in the tab-->
+        <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
+        <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
+        <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script src="/dbc/dbglobal.js"></script>
+        <script>
+            async function loadItems() {
+                const items = await getAllItems("recipeStore");
+                const list = [];
+                for(x in items) {
+                    item = items[x];
+                    //Creating a list item    
+                    list.push(
+                    "<li>" +
+                        "<div>"+item.name+"</div>" +
+                        "<div>" +
+                            "<a data-type='major' href='/database/recipes/edit.html?key="+x+"'>View</a>" +
+                        "</div>" +
+                    "</li>");
+                };
+                document.getElementById('output').innerHTML = list;
+            };
+            
+        </script>
+    </head>
+    <body>
+        <nav id="main" class="cf include-html" data-include-src="/c/navbar.html">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/database/food.html">Fridge</a></li>
+                <li><a href="/database/recipes/">Recipes</a></li>
+                <li><a href="/database/shopping.html">Shopping List</a></li>
+                <li><a href="/help.html">Help</a></li>            
+            </ul>
+        </nav>
+        <h1>Recipes</h1>
+        <form data-cf >
+            <label for="name">Name: </label>
+            <input type="text" name="name" id="name">
+            <input type="submit" value="New Recipe" data-float="right">
+        </form>
+        <ul id="output"></ul>
+        
+        <script>
+            loadItems();
+        </script>
+        <footer class="cf include-html" data-include-src="/c/footer.html">
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/database/food.html">Fridge</a></li>
+                    <li><a href="/database/recipes/">Recipes</a></li>
+                    <li><a href="/database/shopping.html">Shopping List</a></li>
+                    <li><a href="/help.html">Help</a></li>
+                </ul>
+            </nav>
+            <p class="right">
+                ©Oliver Glossop, 2023
+            </p>
+        </footer>
+        <script>
+            includeHTML();
+        </script>
+    </body>
+</html>
