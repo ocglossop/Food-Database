@@ -2,13 +2,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Recipes - Food Database</title> <!--The title that appears in the tab-->
+        <title>Edit Recipe - Food Database</title> <!--The title that appears in the tab-->
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script>
         <script>
-            let key = 1; //This will be changed later
+            //Getting the key to load from the URL
+            let query = new URLSearchParams(window.location.search); //Gets the URL parameters of the page
+            let key = Number(query.get('key')); //Gets the 'key' parameter as a number
+            console.log(key);
+            
             var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
             var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
 
@@ -85,7 +89,7 @@
                 <li><a href="/help.html">Help</a></li>            
             </ul>
         </nav>
-        <h1>Recipes</h1>
+        <h1>Edit Recipe</h1>
         <div data-cf class="grid-2"><!--Container for the recipe editor and ingredient list-->
             <div>
                 <form onsubmit="event.preventDefault(); saveText(this)">
