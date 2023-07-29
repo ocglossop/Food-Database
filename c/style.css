@@ -84,6 +84,13 @@ nav ul li a:hover { /*When a button is hovered over*/
     align-items: start;
 }
 
+a[data-type] {
+   text-decoration: none;
+   display: inline-block;
+   padding: 1px 6px; /*Default style for buttons*/
+
+}
+
 /*Form elements*/
 form:not(.none) {
     background-color: var(--form-color);
@@ -99,7 +106,7 @@ label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5em;
 }
-input, select, button { /*Applies to all input elements*/
+input, select, button { /*Applies to all input and button elements*/
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     
@@ -118,11 +125,11 @@ input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
 }
 /*Style for buttons*/
-input[type=submit], button[data-type=major] {
+input[type=submit], button[data-type=major], a[data-type=major] {
     background-color: var(--button-color);
     color: white;
 }
-input[type=submit]:hover, button[data-type=major]:hover {
+input[type=submit]:hover, button[data-type=major]:hover, a[data-type=major]:hover {
     background-color: var(--button-hover-color);
 }
 input[type=reset], button[data-type=minor] {
