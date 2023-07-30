@@ -23,7 +23,7 @@
                 };
                 document.getElementById('output').innerHTML = list;
             };
-            
+
         </script>
     </head>
     <body>
@@ -37,9 +37,9 @@
             </ul>
         </nav>
         <h1>Recipes</h1>
-        <form data-cf >
+        <form data-cf action="edit.html"><!--Loads the editor when submitted-->
             <label for="name">Name: </label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="new-name" id="name">
             <input type="submit" value="New Recipe" data-float="right">
         </form>
         <ul id="output"></ul>
