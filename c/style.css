@@ -92,7 +92,7 @@ a[data-type] {
 }
 
 /*Form elements*/
-form:not(.none) {
+form:not(.none), .form {
     background-color: var(--form-color);
     margin: auto;
     padding: 1.0rem;
