@@ -137,3 +137,28 @@ function removeItem(key, store, callback = null) {
         };
     })
 }
+
+//Adding several items at once
+function addArray(items, store) {
+    return new Promise(async (resolve, reject) => {
+        await dbPromise;
+        const transaction = db.transaction(store, "readwrite"); //Gets the transaction in an object
+        const objectStore = transaction.objectStore(store);
+        
+        for (x of items) { //Iterates through each item
+            const request = objectStore.add(x);
+            request.onerror = () => transaction.abort(); //Undoes all changes if something goes wrong
+        }
+
+        //Once all items are added
+        transaction.onsuccess = (event) => resolve(event.target.result);
+        transaction.onerror = (event) => {
+            console.log(`addArray failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+        transaction.onabort = (event) => {
+            console.log(`addArray aborted. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+    })
+}
