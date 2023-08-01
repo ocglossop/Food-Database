@@ -10,17 +10,18 @@
         <script>
             var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
             var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
-            
+            let key;
+
             async function getRecipe() { 
                 recipe = await getItem(key, 'recipeStore');
             }
 
             //Getting the key to load from the URL
             let query = new URLSearchParams(window.location.search); //Gets the URL parameters of the page
-            let key;
+            
 
             if (query.get('new-name')) { //If a new recipe is made
-                recipe = {name:query.get('new-name'), text:''}; //Adds the name to the recipe
+                recipe = {name:query.get('new-name'), text:'', ingredients:[]}; //Adds the name to the recipe
                 recipePromise = addItem(recipe, 'recipeStore');
                 recipePromise.then((value) => {key = value;}); //Get the key for the new recipe
             } else {
@@ -85,6 +86,15 @@
                 recipe.text = form['text'].value; //Gets the text from the form
                 updateItem(key, recipe, 'recipeStore');
             }
+
+            async function addToShoppingList() {
+                await recipePromise;
+                const promise = addArray(recipe.ingredients, 'shoppingList');
+                promise.then( 
+                    () => window.alert("Success"), //What to do if the function succeeds
+                    (error) => window.alert(error) //What to do if the function fails
+                )
+            }
         </script>
     </head>
     <body>
@@ -109,7 +119,7 @@
             </div><div>
                 <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
                     <div><!--Will be used to separate different parts of the form-->
-                        <label for="name">Name: </label>
+                        <label for="name">Ingredient: </label>
                         <input type="text" name="name" id="name">
                     </div><div>
                         <label for="qty">Amount: </label>
@@ -122,8 +132,11 @@
                         </select> 
                     </div>
                     <input type="submit" value="Add Item">
-                    <input type="reset" value="Clear" data-float="right">
+                    <input type="reset" value="Clear Form" data-float="right">
                 </form>
+                <div class="form">
+                    <button data-type="minor" onclick="addToShoppingList()">Add All to Shopping List</button>
+                </div>
 
                 <ul id="output"><!--The list of items in the fridge-->
                     <!--Add loading animation-->
