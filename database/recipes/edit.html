@@ -89,11 +89,9 @@
 
             async function addToShoppingList() {
                 await recipePromise;
-                const promise = addArray(recipe.ingredients, 'shoppingList');
-                promise.then( 
-                    () => window.alert("Success"), //What to do if the function succeeds
-                    (error) => window.alert(error) //What to do if the function fails
-                )
+                await addArray(recipe.ingredients, 'shoppingList');
+                console.log('arrived');
+                window.alert("Success");
             }
         </script>
     </head>
