@@ -38,6 +38,28 @@
                 await removeItem(key, 'shoppingList');
                 loadItems(); //Refresh the list once complete
             }
+            async function addAllToFridge() {
+                const items = await getAllItems('shoppingList'); //Get the shopping list
+                console.log(items);
+                const promise = addArray(items, 'foodStore'); //Add to the fridge
+                console.log(2);
+                promise.then(
+                    () => {
+                        console.log(3);
+                        for (i in items) {
+                            removeItem(Number(i), 'shoppingList'); //Remove each item from the shopping list
+                            console.log(i);
+
+                        }
+                        window.alert("Items added successfully");
+                    },
+                    (error) => {
+                        console.log('error');
+                        window.alert("Something went wrong. Error code: " + error);
+                    }
+                )
+                
+            }
         </script>
     </head>
     <body>
@@ -68,6 +90,9 @@
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
         </form>
+        <div class="form">
+            <button data-type="minor" onclick="addAllToFridge()">Add all to fridge</button>
+        </div>
 
         <ul id="output"><!--The list of items in the shopping list-->
         </ul>
