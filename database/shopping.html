@@ -44,14 +44,15 @@
                 const promise = addArray(items, 'foodStore'); //Add to the fridge
                 console.log(2);
                 promise.then(
-                    () => {
-                        console.log(3);
-                        for (i in items) {
-                            removeItem(Number(i), 'shoppingList'); //Remove each item from the shopping list
-                            console.log(i);
-
+                    async () => { 
+                        const transaction = await getTrans('shoppingList', true);
+                        transaction.oncomplete = (event) => loadItems(); //Refreshes the list when complete.
+                        for (key in items) {
+                            transaction
+                                .objectStore('shoppingList')
+                                .delete(Number(key))//Deletes each item
+                                .onsuccess = (event) => console.log(event.target.result);
                         }
-                        window.alert("Items added successfully");
                     },
                     (error) => {
                         console.log('error');
