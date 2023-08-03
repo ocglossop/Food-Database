@@ -85,10 +85,13 @@ nav ul li a:hover { /*When a button is hovered over*/
 }
 
 a[data-type] {
-   text-decoration: none;
-   display: inline-block;
-   padding: 1px 6px; /*Default style for buttons*/
-
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.5rem;
+    height: 1.4em;
+    padding: 3px 6px;
+    box-sizing: border-box;
+    margin: 0 0.5em;
 }
 
 /*Form elements*/
