@@ -42,6 +42,15 @@ function openDB() {
 
 let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
+//Quick function to open a transaction
+async function getTrans(store, readwrite = true) {
+    await dbPromise;
+    let type = readwrite ? 'readwrite' : 'readonly'; //Whether or not the database is written or not
+    let transaction = db.transaction(store, type);
+    console.log(transaction);
+    return transaction //Returns the transaction object.
+}
+
 //Reading data for a specific id
 function getItem(key, store, callback = null) { 
     return new Promise(async (resolve, reject) => { //Async function, as it may have to wait for the database to be opened
