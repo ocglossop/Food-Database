@@ -17,13 +17,27 @@
                     "<li>" +
                         "<div>"+item.name+"</div>" +
                         "<div>" +
+                            "<button data-type='major' onclick='addToShoppingList("+x+")'>Add to Shopping List</button>" +
                             "<a data-type='major' href='/database/recipes/edit.html?key="+x+"'>View</a>" +
                         "</div>" +
                     "</li>");
                 };
                 document.getElementById('output').innerHTML = list;
             };
-
+            async function addToShoppingList(key) {
+                console.log(1);
+                const recipe = await getItem(key, 'recipeStore');
+                const ingredients = recipe.ingredients;
+                console.log(2)
+                let promise = addArray(ingredients, 'shoppingList'); //Add the items to the shopping list
+                promise.then(
+                    () => {window.alert("Items added")},
+                    (error) => {
+                        window.alert("Something went wrong. Error code: " + error)
+                        console.log(error);
+                    }
+                )
+            }
         </script>
     </head>
     <body>
