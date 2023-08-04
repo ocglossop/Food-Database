@@ -168,7 +168,6 @@ function addArray(items, store) {
         for (x in items) { //Iterates through each item
             const request = objectStore.add(items[x]);
             request.onerror = () => transaction.abort(); //Undoes all changes if something goes wrong
-            request.onsuccess = () => console.log(items[x]);
         }
 
         
