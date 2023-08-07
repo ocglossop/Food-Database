@@ -12,6 +12,8 @@
     --button-hover-color: rgb(80, 80, 80); 
     --output-color: rgb(109, 166, 181); /*The background colour of the list of items in the fridge/shopping list*/
     --output-item-color: rgb(232, 232, 232); /*The background colour of each list item*/
+    --checkbox-color: rgb(178, 178, 178); /*The colour of a checkbox*/
+    --checkbox-hover-color: rgb(128, 128, 128); 
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -52,6 +54,7 @@ nav#main {
     top: 0; 
     width: 100%; /*To make the navbar fill the entire width of the page*/
     background-color: var(--nav-color); 
+    z-index: 10; /*To show up in front of the other pages*/
 }
 nav ul {
     list-style-type: none; /*Removes the bullet points beside each link*/
@@ -92,6 +95,12 @@ a[data-type] {
     padding: 3px 6px;
     box-sizing: border-box;
     margin: 0 0.5em;
+}
+
+.sticky {
+    position: sticky;
+    top: 2.1em;
+    z-index: 1;
 }
 
 /*Form elements*/
@@ -189,6 +198,68 @@ ul#output {
 #output input:not([type=submit]) { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
 }
+
+/*From W3Schools*/
+.check-container {
+    display: block;
+    position: relative;
+    padding-left: 1.59em; /*35/22*/
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 0;
+}
+/*Hiding default checkbox*/
+.check-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+/*Create a custom checkbox*/
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.14em; /*25/22*/
+    width: 1.14em;
+    background-color: var(--checkbox-color);
+}
+/* On mouse-over, add a grey background color */
+.check-container:hover input ~ .checkmark {
+    background-color: var(--checkbox-hover-color);
+}
+/* When the checkbox is checked, add a blue background 
+.check-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}*/
+/*Create the checkmark/indicator (hidden when not checked)*/
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+/*Show the checkmark when checked*/
+.check-container input:checked ~ .checkmark:after {
+    display: block;
+}
+/*Style the checkmark/indicator*/
+.check-container .checkmark:after {
+    left: 0.41em;
+    top: 0.23em;
+    width: 0.23em;
+    height: 0.46em;
+    border: solid white;
+    border-width: 0 0.14em 0.14em 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
 
 footer {
     padding: 1em;

@@ -26,10 +26,12 @@
                     //Creating a list item    
                     list.push(
                     "<li>" +
-                        "<div>"+item.name+"</div>" +
-                        "<div>" +
-                            item.qty+item.unit+" <button data-type='major' onclick='check("+x+")'>Remove</button>" +
-                        "</div>" +
+                        "<label class='check-container'>" +
+                            item.name +
+                            "<input type='checkbox'>" +
+                            "<span class='checkmark'></span>" +
+                        "</label>" +
+                        item.qty+item.unit +
                     "</li>");
                 };
                 document.getElementById('output').innerHTML = list;
@@ -95,8 +97,20 @@
             <button data-type="minor" onclick="addAllToFridge()">Add all to fridge</button>
         </div>
 
-        <ul id="output"><!--The list of items in the shopping list-->
-        </ul>
+        <div>
+            <form class="sticky">
+                <button data-type="major">Add to fridge</button>
+            </form>
+            <ul id="output"><!--The list of items in the shopping list-->
+                <li>
+                    <label class="check-container">
+                        Milk
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </li>
+            </ul>
+        </div>
         <script>
             loadItems();
         </script>
