@@ -15,7 +15,10 @@
                     unit:form['unit'].value,
                     qty:form['qty'].value,
                     added:form['added'].value,
-                    expiry:form['expiry'].value
+                    expiry:form['expiry'].value,
+                    autoRenew:form['auto-renew'].value,
+                    doRenew:form['auto-renew'].value ? true : false, //Whether the item should be automatically added
+                    qtyRenew:form['auto-renew'].value ? form['qty'].value : 0 //The amount to be added upon renewal
                 };
                 console.log(item);
                 await addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
@@ -42,6 +45,13 @@
             async function useItem(key, form) { //Decrementing the amount of items
                 const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
                 item.qty -= form['qty'].value; //Subtracting the amount used
+                if (item.doRenew & item.qty < item.autoRenew) { //If below the set amount, and not renewed already
+                    const tempQty = item.qty; //Stores the qty temporarily, so it can be restored later
+                    item.qty = item.qtyRenew; //Sets the qty to add to the shopping list
+                    await addItem(item, 'shoppingList'); //Add to shopping list
+                    item.doRenew = false; //The item shouldn't be added twice
+                    item.qty = tempQty; 
+                }
                 if (item.qty <= 0) { //If all of the item has been used
                     await removeItem(key, 'foodStore'); //Remove the item
                     loadItems(); //Updates the list
@@ -87,6 +97,10 @@
                     <option value=false>Best Before</option>
                 </select>
                 <input type="date" name="expiry" id="expiry">
+            </div><div>
+                <label for="auto-renew">Add to shopping list when below: </label>
+                <input type="number" name="auto-renew" id="auto-renew">
+                <!--Add tooltip, and get unit-->
             </div>
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
