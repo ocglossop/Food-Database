@@ -28,7 +28,7 @@
                     "<li>" +
                         "<label class='check-container'>" +
                             item.name +
-                            "<input type='checkbox'>" +
+                            "<input type='checkbox' form='list' onchange='check(this, "+x+")' name="+x+" "+(item.checked?'checked':'')+">" +
                             "<span class='checkmark'></span>" +
                         "</label>" +
                         item.qty+item.unit +
@@ -36,9 +36,10 @@
                 };
                 document.getElementById('output').innerHTML = list;
             };
-            async function check(key) { //Removing an item from the list
-                await removeItem(key, 'shoppingList');
-                loadItems(); //Refresh the list once complete
+            async function check(checkbox, key) { //Checking/unchecking an item
+                const item = await getItem(key, 'shoppingList');
+                item.checked = checkbox.checked; //Sets that the item is checked
+                updateItem(key, item, 'shoppingList');
             }
             async function addAllToFridge() {
                 const items = await getAllItems('shoppingList'); //Get the shopping list
@@ -62,6 +63,26 @@
                     }
                 )
                 
+            }
+            async function addChecked(form) {
+                const shopTransaction = await getTrans('shoppingList', true);
+                shopTransaction.oncomplete = (event) => loadItems();
+
+                const fridgeTransaction = await getTrans('foodStore', true);
+                
+                for (x of form.elements) {
+                    if (x.checked) {
+                        const shoppingList = shopTransaction.objectStore('shoppingList');
+                        shoppingList.onerror = (event) => {abort()};
+                        shoppingList.get(Number(x.name)).onsuccess = (event) => {
+                            fridgeTransaction //Adds the item to the fridge
+                                .objectStore('foodStore')
+                                .add(event.target.result)
+                                .onsuccess = (event) => {}
+                        };
+                        shoppingList.remove(Number(x.name)).onsuccess = (event) => {}; //Removes the item
+                    }
+                }
             }
         </script>
     </head>
@@ -98,17 +119,10 @@
         </div>
 
         <div>
-            <form class="sticky">
-                <button data-type="major">Add to fridge</button>
+            <form class="sticky" name="list" onsubmit="event.preventDefault(); addChecked(this)">
+                <input type="submit" data-type="major" value="Add to Fridge">
             </form>
             <ul id="output"><!--The list of items in the shopping list-->
-                <li>
-                    <label class="check-container">
-                        Milk
-                        <input type="checkbox" checked="checked">
-                        <span class="checkmark"></span>
-                    </label>
-                </li>
             </ul>
         </div>
         <script>
