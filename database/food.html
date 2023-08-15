@@ -98,13 +98,16 @@
                 </select>
                 <input type="date" name="expiry" id="expiry">
             </div><div>
-                <label for="auto-renew">Add to shopping list when below: </label>
+                <label for="auto-renew">Add to shopping list automatically when below: </label>
                 <input type="number" name="auto-renew" id="auto-renew">
                 <!--Add tooltip, and get unit-->
             </div>
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
         </form>
+        <script>
+            document.getElementById('added').defaultValue = getTodayFormatted(); //Sets the 
+        </script>
 
         <ul id="output"><!--The list of items in the fridge-->
             <!--Todo: indicate that the list is loading-->
