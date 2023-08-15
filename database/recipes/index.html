@@ -15,10 +15,16 @@
                     //Creating a list item    
                     list.push(
                     "<li>" +
-                        "<div>"+item.name+"</div>" +
+                        "<a data-decor=underline href='/database/recipes/edit.html?key="+x+"'>"+item.name+"</a>" +
                         "<div>" +
                             "<button data-type='major' onclick='addToShoppingList("+x+")'>Add to Shopping List</button>" +
-                            "<a data-type='major' href='/database/recipes/edit.html?key="+x+"'>View</a>" +
+                        "</div><div>" +
+                            "<form data-float='right' class='none' onsubmit='event.preventDefault(); addLeftovers("+x+", this)'><input name='qty' type='number' min='0'>/<select id='unit' name='unit'>" +
+                                "<option value=''></option>" +
+                                "<option value='g'>g</option>" +
+                                "<option value='kg'>kg</option>" +
+                                "<option value='L'>L</option>" +
+                            "</select><input type='submit' value='Add Leftovers'></form>" +
                         "</div>" +
                     "</li>");
                 };
@@ -37,6 +43,17 @@
                         console.log(error);
                     }
                 )
+            }
+            async function addLeftovers(key, form) {
+                const recipe = await getItem(key, 'recipeStore');
+                const item = {
+                    name:recipe.name,
+                    qty:form['qty'].value,
+                    unit:form['unit'].value,
+                    added:getTodayFormatted() //Sets the date added
+                }
+                await addItem(item, 'foodStore');
+                window.alert("Added to fridge.");
             }
         </script>
     </head>
