@@ -43,8 +43,8 @@ function openDB() {
 let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
 function getTodayFormatted() { //Get today's date as required by HTML
-    let date = new Date();
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+    let date = new Date().toJSON();
+    return date.slice(0,10); //Only get the first part of the date
 }
 
 //Quick function to open a transaction
