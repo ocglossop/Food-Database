@@ -65,24 +65,16 @@
                 
             }
             async function addChecked(form) {
-                const shopTransaction = await getTrans('shoppingList', true);
-                shopTransaction.oncomplete = (event) => loadItems();
-
-                const fridgeTransaction = await getTrans('foodStore', true);
-                
+                const items = [];
                 for (x of form.elements) {
-                    if (x.checked) {
-                        const shoppingList = shopTransaction.objectStore('shoppingList');
-                        shoppingList.onerror = (event) => {abort()};
-                        shoppingList.get(Number(x.name)).onsuccess = (event) => {
-                            fridgeTransaction //Adds the item to the fridge
-                                .objectStore('foodStore')
-                                .add(event.target.result)
-                                .onsuccess = (event) => {}
-                        };
-                        shoppingList.remove(Number(x.name)).onsuccess = (event) => {}; //Removes the item
+                    if (x.checked) { //Get the checked items
+                        items.push(await getItem(Number(x.name), 'shoppingList'));
+                        await removeItem(Number(x.name), 'shoppingList'); //Remove the item from the shopping list
                     }
-                }
+                };
+                await addArray(items, 'foodStore'); //Add the items to the fridge
+                console.log(items);
+                loadItems(); //Reload the page after
             }
         </script>
     </head>
@@ -119,7 +111,7 @@
         </div>
 
         <div>
-            <form class="sticky" name="list" onsubmit="event.preventDefault(); addChecked(this)">
+            <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)">
                 <input type="submit" data-type="major" value="Add to Fridge">
             </form>
             <ul id="output"><!--The list of items in the shopping list-->
