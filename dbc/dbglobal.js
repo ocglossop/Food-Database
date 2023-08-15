@@ -42,6 +42,11 @@ function openDB() {
 
 let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
+function getTodayFormatted() { //Get today's date as required by HTML
+    let date = new Date();
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+}
+
 //Quick function to open a transaction
 async function getTrans(store, readwrite = true) {
     await dbPromise;
