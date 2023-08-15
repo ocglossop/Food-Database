@@ -83,7 +83,7 @@
             
             async function saveText(form) {
                 await recipePromise;
-                recipe.text = form['text'].value; //Gets the text from the form
+                recipe.text = form['text'].value.replace('<',''); //Gets the text from the form, and removes '<'
                 updateItem(key, recipe, 'recipeStore');
             }
 
