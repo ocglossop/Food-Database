@@ -142,6 +142,9 @@ input[type=number] {
     width: 3em;
     text-align: right;
 }
+input[list="unit-select"] {
+    width: 4em;
+}
 
 input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
