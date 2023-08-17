@@ -68,6 +68,7 @@
                 recipe.ingredients.push(item); //Adds the item to the list of ingredients.
                 await updateItem(key, recipe, 'recipeStore'); //Wait until the item is added
                 loadItems(); //Reload the list of ingredients
+                form.reset(); //Clears the form after adding an ingredient
                 return false 
             }
             async function removeIngredient(index) { //Removing an item from the list

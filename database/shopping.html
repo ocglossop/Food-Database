@@ -16,6 +16,7 @@
                 }
                 await addItem(item, 'shoppingList', console.log);
                 loadItems();
+                form.reset(); //Reset the form after
                 return false 
             }
             async function loadItems() {
