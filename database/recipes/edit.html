@@ -20,10 +20,11 @@
             let query = new URLSearchParams(window.location.search); //Gets the URL parameters of the page
             
 
-            if (query.get('new-name')) { //If a new recipe is made
+            if (query.get('new-name') & !query.get('key')) { //If a new recipe is made, and no key is sent
                 recipe = {name:query.get('new-name'), text:'', ingredients:[]}; //Adds the name to the recipe
                 recipePromise = addItem(recipe, 'recipeStore');
                 recipePromise.then((value) => {key = value;}); //Get the key for the new recipe
+                console.log('New recipe created.');
             } else {
                 key = Number(query.get('key')); //Gets the 'key' parameter as a number
                 recipePromise = getRecipe(); //recipePromise holds a promise which is fulfilled when getRecipe is complete

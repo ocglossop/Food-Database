@@ -51,6 +51,13 @@
                 await addItem(item, 'foodStore');
                 window.alert("Added to fridge.");
             }
+            async function newRecipe(form) { //
+                const recipe = {name:form['new-name'].value, text:'', ingredients:[]}; //Adds the name to the recipe
+                let key = await addItem(recipe, 'recipeStore');
+                form['key'].value = key; 
+                
+                form.submit() //The form must be submitted this way because the function must be async
+            }
         </script>
     </head>
     <body>
@@ -64,10 +71,11 @@
             </ul>
         </nav>
         <h1>Recipes</h1>
-        <form data-cf action="edit.html"><!--Loads the editor when submitted-->
+        <form data-cf action="edit.html" onsubmit="event.preventDefault(); newRecipe(this)"><!--Loads the editor when submitted-->
             <label for="name">Name: </label>
             <input type="text" name="new-name" id="name">
             <input type="submit" value="New Recipe" data-float="right">
+            <input type="hidden" name="key"><!--The key can be added and sent with javascript-->
         </form>
         <ul id="output"></ul>
         <datalist id="unit-select">
