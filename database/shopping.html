@@ -97,12 +97,13 @@
             </div><div>
                 <label for="qty">Amount: </label>
                 <input type="number" name="qty" id="qty" min="0">
-                <select id="unit" name="unit">
-                    <option value=""></option>
-                    <option value="g">g</option>
-                    <option value="kg">kg</option>
-                    <option value="L">L</option>
-                </select> 
+                <input type="text" list="unit-select" id="unit" name="unit">
+                <datalist id="unit-select">
+                    <option value="">
+                    <option value="g">
+                    <option value="kg">
+                    <option value="L">
+                </datalist>
             </div>
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
