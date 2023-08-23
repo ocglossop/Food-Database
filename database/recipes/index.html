@@ -15,10 +15,12 @@
                     //Creating a list item    
                     list.push(
                     "<li>" +
-                        "<div>"+item.name+"</div>" +
+                        "<a data-decor=underline href='/database/recipes/edit.html?key="+x+"'>"+item.name+"</a>" +
                         "<div>" +
                             "<button data-type='major' onclick='addToShoppingList("+x+")'>Add to Shopping List</button>" +
-                            "<a data-type='major' href='/database/recipes/edit.html?key="+x+"'>View</a>" +
+                        "</div><div>" +
+                            "<form data-float='right' class='none' onsubmit='event.preventDefault(); addLeftovers("+x+", this)'><input name='qty' type='number' min='0'>/<input type='text' list='unit-select' id='unit' name='unit'>" +
+                            "<input type='submit' value='Add Leftovers'></form>" +
                         "</div>" +
                     "</li>");
                 };
@@ -38,6 +40,24 @@
                     }
                 )
             }
+            async function addLeftovers(key, form) {
+                const recipe = await getItem(key, 'recipeStore');
+                const item = {
+                    name:recipe.name,
+                    qty:form['qty'].value,
+                    unit:form['unit'].value,
+                    added:getTodayFormatted() //Sets the date added
+                }
+                await addItem(item, 'foodStore');
+                window.alert("Added to fridge.");
+            }
+            async function newRecipe(form) { //
+                const recipe = {name:form['new-name'].value, text:'', ingredients:[]}; //Adds the name to the recipe
+                let key = await addItem(recipe, 'recipeStore');
+                form['key'].value = key; 
+                
+                form.submit() //The form must be submitted this way because the function must be async
+            }
         </script>
     </head>
     <body>
@@ -51,13 +71,19 @@
             </ul>
         </nav>
         <h1>Recipes</h1>
-        <form data-cf action="edit.html"><!--Loads the editor when submitted-->
+        <form data-cf action="edit.html" onsubmit="event.preventDefault(); newRecipe(this)"><!--Loads the editor when submitted-->
             <label for="name">Name: </label>
             <input type="text" name="new-name" id="name">
             <input type="submit" value="New Recipe" data-float="right">
+            <input type="hidden" name="key"><!--The key can be added and sent with javascript-->
         </form>
         <ul id="output"></ul>
-        
+        <datalist id="unit-select">
+            <option value=''>
+            <option value='g'>
+            <option value='kg'>
+            <option value='L'>
+        </datalist>
         <script>
             loadItems();
         </script>

@@ -48,6 +48,16 @@ p {
 }
 [data-justify=right] {text-justify: right;} /*To justify the text to the right of the element*/
 
+[data-decor=none] { /*To remove the underline and colour from links*/
+    text-decoration: none;
+    color: inherit; /*The text colour is that of the parent element*/
+}
+[data-decor=underline] { /*Only removing the colour*/
+    color: inherit;
+} 
+a[data-decor]:not([data-decor=none]):hover { /*Adding hover to links*/
+    color: var(--checkbox-hover-color)
+}
 
 nav#main {
     position: sticky; /*The navbar will stay at the top of the page when the user scrolls down*/
@@ -132,6 +142,9 @@ input[type=number] {
     width: 3em;
     text-align: right;
 }
+input[list="unit-select"] {
+    width: 4em;
+}
 
 input:focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
@@ -195,7 +208,7 @@ ul#output {
 
     gap: 0.6em; /*Adds gaps between the grid items*/
 }
-#output input:not([type=submit]) { /*Excludes the submit button from this styling*/
+#output input:not([type=submit]), #output select { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
 }
 

@@ -16,6 +16,7 @@
                 }
                 await addItem(item, 'shoppingList', console.log);
                 loadItems();
+                form.reset(); //Reset the form after
                 return false 
             }
             async function loadItems() {
@@ -31,7 +32,7 @@
                             "<input type='checkbox' form='list' onchange='check(this, "+x+")' name="+x+" "+(item.checked?'checked':'')+">" +
                             "<span class='checkmark'></span>" +
                         "</label>" +
-                        item.qty+item.unit +
+                        item.qty+" "+item.unit +
                     "</li>");
                 };
                 document.getElementById('output').innerHTML = list;

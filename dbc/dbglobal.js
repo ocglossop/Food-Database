@@ -42,6 +42,11 @@ function openDB() {
 
 let dbPromise = openDB(); //The promise object is stored in the 'dbPromise' variable
 
+function getTodayFormatted() { //Get today's date as required by HTML
+    let date = new Date().toJSON();
+    return date.slice(0,10); //Only get the first part of the date
+}
+
 //Quick function to open a transaction
 async function getTrans(store, readwrite = true) {
     await dbPromise;
@@ -72,16 +77,24 @@ function getItem(key, store, callback = null) {
     })
 }
 //Adding an item to an object store
-async function addItem(item, store, callback = null) {
-    await dbPromise;
-    const objectStore = db.transaction(store, "readwrite").objectStore(store);
-    const request = objectStore.add(item);
+function addItem(item, store, callback = null) {
+    return new Promise(async (resolve, reject) => {
+        await dbPromise;
+        const objectStore = db.transaction(store, "readwrite").objectStore(store);
+        const request = objectStore.add(item);
 
-    if (callback) { 
-        request.onsuccess = (event) => callback(event.target.result); //This will return the key of the item
-    }
-    request.onerror = (event) => console.log(`addItem failed. Error code: ${event.target.errorCode}`);
-    return
+        request.onsuccess = (event) => {
+            if (callback) { 
+                callback(event.target.result); //This will return the key of the item
+            };
+            resolve(event.target.result);
+        }
+        request.onerror = (event) => {
+            console.log(`addItem failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        };
+        return
+    });
 }
 //Retrieveing all the items in the object store
 function getAllItems(store) {
