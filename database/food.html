@@ -63,6 +63,10 @@
                         //Updates the page
                 }
             }
+            function updateUnit(input) { //Called to update the units for the automatic add amount
+                let unit = input.value;
+                document.getElementById('unit-out').innerHTML = unit;
+            }
         </script>
     </head>
     <body>
@@ -83,8 +87,10 @@
                 <input type="text" name="name" id="name">
             </div><div>
                 <label for="qty">Amount: </label>
-                <input type="number" name="qty" id="qty" min="0">
-                <input type="text" list="unit-select" id="unit" name="unit">
+                <div data-inline>
+                    <input type="number" name="qty" id="qty" min="0">
+                    <input type="text" list="unit-select" id="unit" name="unit" onchange="updateUnit(this)">
+                </div>
                 <datalist id="unit-select">
                     <option value="">
                     <option value="g">
@@ -101,9 +107,11 @@
                 </select>
                 <input type="date" name="expiry" id="expiry">
             </div><div>
-                <label for="auto-renew">Add to shopping list automatically when below: </label>
-                <input type="number" name="auto-renew" id="auto-renew">
-                <!--Add tooltip, and get unit-->
+                <label>Add to shopping list automatically when below: 
+                    <input type="number" name="auto-renew" id="auto-renew">
+                    <span id="unit-out"><!--The selected unit will be shown here--></span>
+                </label>
+                <!--Add tooltip-->
             </div>
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
