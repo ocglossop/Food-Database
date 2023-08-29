@@ -25,6 +25,7 @@
                 await addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
                 loadItems(); //Refreshes the list after an item is added
                 form.reset();
+                updateUnit(document.getElementById("unit")); //Clears the unit
                 return false //Prevents the form from reloading the page
             }
             async function loadItems() {
