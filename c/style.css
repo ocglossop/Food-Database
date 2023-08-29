@@ -58,6 +58,7 @@ p {
 a[data-decor]:not([data-decor=none]):hover { /*Adding hover to links*/
     color: var(--checkbox-hover-color)
 }
+div[data-inline] {display: inline-block} 
 
 nav#main {
     position: sticky; /*The navbar will stay at the top of the page when the user scrolls down*/
@@ -123,6 +124,9 @@ form:not(.none), .form {
     width: 100%; /*If the form takes up less space than 900px, it will fill the entire area*/
     max-width: 900px;
     box-sizing: border-box;
+}
+form:not(.none) div {
+    margin: 0.2em 0;
 }
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
