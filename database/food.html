@@ -60,7 +60,7 @@
                     loadItems(); //Updates the list
                 } else { //If some of the item is still left
                     await updateItem(key, item, 'foodStore');
-                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+item.unit+"<input type='submit' value='Use'>"
+                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input type='submit' value='Use'>"
                         //Updates the page
                 }
             }
