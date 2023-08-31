@@ -40,7 +40,7 @@
             };
             async function check(checkbox, key) { //Checking/unchecking an item
                 const item = await getItem(key, 'shoppingList');
-                item.checked = checkbox.checked; //Sets that the item is checked
+                item.checked = checkbox.checked; //Sets that the item is checked/unckecked
                 updateItem(key, item, 'shoppingList');
             }
             async function addAllToFridge() {
