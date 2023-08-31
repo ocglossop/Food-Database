@@ -73,23 +73,33 @@ nav ul {
     padding: 0; /*Removes the large space on the left of the navbar*/
 }
 nav#main ul li {
-    float: left;
-    
+    display: none;
 }
-nav ul li a { 
+nav ul li a, nav button { 
     font-size: 1.5rem;
 
     display: block; /*To allow for vertical padding.*/
     padding: 0.3em 0.5em; /*Padding for top/bottom, padding for left/right*/
-
+    
+    /*These attributes prevent the button from being affected by other styles*/
+    background-color: inherit;
+    height: auto; 
 
     text-decoration: none;
     color: #000;
     
 }
-nav ul li a:hover { /*When a button is hovered over*/
+nav ul li a:hover, nav button:hover, nav button:focus { /*When a button is hovered over*/
     background-color: var(--nav-hover-color);
     color: white;
+}
+nav#main:focus-within ul li {
+    display: block;
+    height: auto;
+}
+nav button {
+    float:right;
+    width:auto;
 }
 
 .grid-2 { /*A grid with two columns*/
@@ -126,24 +136,28 @@ form:not(.none), .form {
     box-sizing: border-box;
 }
 form:not(.none) div {
-    margin: 0.2em 0;
+    margin: 1rem 0;
 }
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5em;
+    display: block; /*For mobile devices, to put the input below the label*/
 }
 input, select, button { /*Applies to all input and button elements*/
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     
     box-sizing: border-box; /*The height includes the margin and padding*/
-    height: 1.4em; /*Relative to the font size of the element (1.5rem)*/
-    
+    height: 1.7em; /*Relative to the font size of the element (1.5rem)*/
+
     background-color: var(--input-color);
     border: none; /*Removes the default black border*/
+
+    width: 100%; /*Fills the whole page on mobile*/
+    max-width: 100%;
 }
 input[type=number] {
-    width: 3em;
+    width: 2em;
     text-align: right;
 }
 input[list="unit-select"] {
@@ -157,6 +171,7 @@ input:focus { /*When the user is typing*/
 input[type=submit], button[data-type=major], a[data-type=major] {
     background-color: var(--button-color);
     color: white;
+    margin: 1rem 0;
 }
 input[type=submit]:hover, button[data-type=major]:hover, a[data-type=major]:hover {
     background-color: var(--button-hover-color);
@@ -211,6 +226,9 @@ ul#output {
     justify-content: space-between; /*The items are spread to the sides of the container*/
 
     gap: 0.6em; /*Adds gaps between the grid items*/
+}
+#output form {
+    width: 6em;
 }
 #output input:not([type=submit]), #output select { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
@@ -292,4 +310,34 @@ footer nav ul li a {
 }
 footer nav ul li a:hover{
     background-color: var(--footer-hover-color)
+}
+@media only screen and (min-width:600px) { /*Styling only for computers*/
+    label {
+        display: inline; /*Label can be next to input*/
+    }
+    input, select, button { 
+        width: auto;
+        height: 1.4em; /*The inputs will be shorter on desktop*/
+    }
+    form:not(.none) div {
+        margin: 0.2em;
+    }
+    input[type=submit], button[data-type=major], a[data-type=major] {
+        margin: 0;
+    }
+    .item-use { /*The 'use' button*/
+        float: right;
+    }
+    #output form {
+        width: auto;
+    }
+
+    /*Navbar on desktop*/
+    nav#main ul li {
+        display: block;
+        float: left;
+    }
+    nav button {
+        display: none; /*Hides the button on desktop*/
+    }
 }
