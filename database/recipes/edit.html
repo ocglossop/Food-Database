@@ -42,12 +42,14 @@
                         
                         if (item) { //Checking if the value is undefined
                             list.push(
-                            "<li>" +
-                                "<div>"+item.name+"</div>" +
-                                "<div>" +
-                                    item.qty+' '+item.unit+" <button data-type='major' onclick='removeIngredient("+x+")'>Remove</button>" +
-                                "</div>" +
-                            "</li>");
+                                "<li>" +
+                                    "<label class='check-container'>" +
+                                        item.name +
+                                        "<input type='checkbox' form='list' onchange='check(this, "+x+")' name="+x+" "+(item.checked?'checked':'')+">" +
+                                        "<span class='checkmark'></span>" +
+                                    "</label>" +
+                                    item.qty+" "+item.unit +
+                                "</li>");
                         }
                     }
                 }
@@ -109,7 +111,7 @@
             </ul>
         </nav>
         <h1 id="recipe-name"></h1>
-        <div data-cf class="grid-2"><!--Container for the recipe editor and ingredient list-->
+        <div data-cf class="grid-responsive"><!--Container for the recipe editor and ingredient list-->
             <div>
                 <form onsubmit="event.preventDefault(); saveText(this)">
                     <label for="recipe-editor">Recipe</label>
@@ -139,10 +141,15 @@
                 <div class="form">
                     <button data-type="minor" onclick="addToShoppingList()">Add All to Shopping List</button>
                 </div>
-
-                <ul id="output"><!--The list of items in the fridge-->
-                    <!--Add loading animation-->
-                </ul>
+                <div>
+                    <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)" data-cf>
+                        <input type="submit" data-type="major" value="Add Selected">
+                        <input type="button" data-type="minor" data-float="right" value="Remove Selected">
+                    </form>
+                    <ul id="output"><!--The list of items in the fridge-->
+                        <!--Add loading animation-->
+                    </ul>
+                </div>
             </div>
             <script>
                 loadItems();

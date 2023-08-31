@@ -102,9 +102,9 @@ nav button {
     width:auto;
 }
 
-.grid-2 { /*A grid with two columns*/
+.grid-responsive { /*2 col on desktop, 1 on mobile*/
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: auto; /*Mobile*/
     align-items: start;
 }
 
@@ -340,4 +340,10 @@ footer nav ul li a:hover{
     nav button {
         display: none; /*Hides the button on desktop*/
     }
+    
+}
+@media only screen and (min-width:800px) { /*For the recipe editor page*/
+    .grid-responsive {
+            grid-template-columns: 50% 50%;
+        }
 }
