@@ -37,7 +37,7 @@
                     list.push("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
-                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)'><input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input type='submit' value='Use'></form>" +
+                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added:<br>"+item.added+"</div>" +
                             "<div>"+ (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>') +item.expiry+"</div>" +
@@ -88,10 +88,8 @@
                 <input type="text" name="name" id="name">
             </div><div>
                 <label for="qty">Amount: </label>
-                <div data-inline>
-                    <input type="number" name="qty" id="qty" min="0">
-                    <input type="text" list="unit-select" id="unit" name="unit" onchange="updateUnit(this)">
-                </div>
+                <input type="number" name="qty" id="qty" min="0">
+                <input type="text" list="unit-select" id="unit" name="unit" onchange="updateUnit(this)">
                 <datalist id="unit-select">
                     <option value="">
                     <option value="g">
