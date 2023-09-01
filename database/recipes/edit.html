@@ -45,7 +45,7 @@
                                 "<li>" +
                                     "<label class='check-container'>" +
                                         item.name +
-                                        "<input type='checkbox' form='list' onchange='check(this, "+x+")' name="+x+" "+(item.checked?'checked':'')+">" +
+                                        "<input type='checkbox' form='list' name="+x+">" +
                                         "<span class='checkmark'></span>" +
                                     "</label>" +
                                     item.qty+" "+item.unit +
@@ -95,8 +95,20 @@
             async function addToShoppingList() {
                 await recipePromise;
                 await addArray(recipe.ingredients, 'shoppingList');
-                console.log('arrived');
+                console.log(recipe.ingredients);
                 window.alert("Success");
+            }
+            async function addChecked(form) {
+                await recipePromise;
+                const ingredients = recipe.ingredients;
+                const items = [];
+                for (x of form.elements) {
+                    if (x.checked) { //Get the checked items
+                        items.push(ingredients[Number(x.name)]);
+                    }
+                };
+                await addArray(items, 'shoppingList'); //Add the items to the shopping list
+                console.log(items);
             }
         </script>
     </head>
