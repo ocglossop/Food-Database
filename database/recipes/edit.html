@@ -77,7 +77,7 @@
             }
             async function removeIngredient(index) { //Removing an item from the list
                 if (ready) { //Makes sure that the list is reloaded before more elements are removed
-                    ready = false; //This function can not be called again until 
+                    ready = false; //This function can not be called again until ready
                     recipe.ingredients.splice(index, 1); //Removes the item from the array without leaving an empty space.
                     console.log(recipe.ingredients);
 
@@ -109,6 +109,24 @@
                 };
                 await addArray(items, 'shoppingList'); //Add the items to the shopping list
                 console.log(items);
+            }
+            async function removeChecked(form) {
+                await recipePromise;
+                const ingredients = recipe.ingredients;
+                const indices = [];
+                for (x of form.elements) { //Getting the indices of values to be removed
+                    if (x.checked) {
+                        indices.push(Number(x.name)); //Adds the index to the list
+                    }
+                }
+                indices.sort(function(a, b){return b - a;}) //Sorts the list in reverse
+                console.log(indices);
+                for (i of indices) { //Removes the elements from the back, so earlier elements won't move
+                    ingredients.splice(i, 1);
+                }
+                await updateItem(key, recipe, 'recipeStore');
+                loadItems(); //Reload the list
+                
             }
         </script>
     </head>
@@ -156,7 +174,7 @@
                 <div>
                     <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)" data-cf>
                         <input type="submit" data-type="major" value="Add Selected">
-                        <input type="button" data-type="minor" data-float="right" value="Remove Selected">
+                        <input type="button" data-type="minor" data-float="right" value="Remove Selected" onclick="removeChecked(document.getElementById('list'))">
                     </form>
                     <ul id="output"><!--The list of items in the fridge-->
                         <!--Add loading animation-->
