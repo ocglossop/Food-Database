@@ -194,7 +194,7 @@ form textarea {
 
     width: 100%; /*The textbox fills the width of the column*/
     resize: vertical; /*The user can only change the height vertically, not horizontally*/
-    height: 9rem;
+    height: calc(70vh - 8em); /*70% of the screen height - 8em*/
 }
 /*
 form input[type=text]::placeholder {
