@@ -227,11 +227,19 @@ ul#output {
 
     gap: 0.6em; /*Adds gaps between the grid items*/
 }
-#output form {
-    width: 6em;
+#output.grid-600 li {
+    grid-template-columns: 100%; /*One single column*/
+    row-gap: 0;
 }
+#output.grid-600 input[type=submit] {
+    margin: 0;
+}
+
 #output input:not([type=submit]), #output select { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
+}
+#output:not(.grid-600) form {
+    width: 6em;
 }
 
 /*From W3Schools*/
@@ -339,6 +347,9 @@ footer nav ul li a:hover{
     }
     nav button {
         display: none; /*Hides the button on desktop*/
+    }
+    #output.grid-600 li {
+        grid-template-columns: auto auto;
     }
     
 }
