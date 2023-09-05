@@ -30,11 +30,11 @@
             }
             async function loadItems() {
                 const items = await getAllItems('foodStore'); //Instead of having this function as a callback, I am using async/await
-                const list = [];
+                let list = '';
                 for(x in items) {
                     item = items[x]
                     //Creating a list item    
-                    list.push("<li>" +
+                    list += ("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
                                 "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +

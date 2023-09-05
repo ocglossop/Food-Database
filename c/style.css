@@ -208,7 +208,7 @@ form input[type=text]:focus::placeholder {
 ul#output {
     list-style-type: none;
     background-color: var(--output-color);
-    padding: 0.5em;
+    padding: 0.25em 0.5em;
     font-size: 1.5rem;
 
     box-sizing: border-box;
@@ -220,6 +220,7 @@ ul#output {
     background-color: var(--output-item-color);
     width: 100%;
     box-sizing: border-box;
+    margin: 0.25em 0;
 
     display: grid; /*To make a grid display of the elements inside*/
     grid-template-columns: auto auto; /*Creates two colums of equal size*/

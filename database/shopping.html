@@ -22,11 +22,11 @@
             }
             async function loadItems() {
                 const items = await getAllItems("shoppingList");
-                const list = [];
+                let list = '';
                 for(x in items) {
                     item = items[x];
                     //Creating a list item    
-                    list.push(
+                    list += (
                     "<li>" +
                         "<label class='check-container'>" +
                             item.name +

@@ -35,13 +35,12 @@
                 await recipePromise; 
                 const items = recipe.ingredients;
                 
-                const list = [];
+                let list = '';
                 if (items.length) { //Checking if there are items in the array
                     for(x in items) {
-                        item = items[x]
-                        
+                        item = items[x];
                         if (item) { //Checking if the value is undefined
-                            list.push(
+                            list += (
                                 "<li>" +
                                     "<label class='check-container'>" +
                                         item.name +

@@ -10,11 +10,11 @@
         <script>
             async function loadItems() {
                 const items = await getAllItems("recipeStore");
-                const list = [];
+                let list = '';
                 for(x in items) {
                     item = items[x];
                     //Creating a list item    
-                    list.push(
+                    list += (
                     "<li>" +
                         "<a data-decor=underline href='/database/recipes/edit.html?key="+x+"'>"+item.name+"</a>" +
                         "<div>" +
