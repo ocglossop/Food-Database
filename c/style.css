@@ -157,7 +157,7 @@ input, select, button { /*Applies to all input and button elements*/
     max-width: 100%;
 }
 input[type=number] {
-    width: 2em;
+    width: 4em;
     text-align: right;
 }
 input[list="unit-select"] {
@@ -239,9 +239,7 @@ ul#output {
 #output input:not([type=submit]), #output select { /*Excludes the submit button from this styling*/
     background-color: var(--input-focus-color);
 }
-#output:not(.grid-600) form {
-    width: 6em;
-}
+
 
 /*From W3Schools*/
 .check-container {
@@ -352,7 +350,9 @@ footer nav ul li a:hover{
     #output.grid-600 li {
         grid-template-columns: auto auto;
     }
-    
+    #output:not(.grid-600) form { /*The form is only narrow on mobile*/
+        min-width: 10em;
+    }
 }
 @media only screen and (min-width:800px) { /*For the recipe editor page*/
     .grid-responsive {
