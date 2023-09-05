@@ -74,7 +74,7 @@
         <h1>Recipes</h1>
         <form data-cf action="edit.html" onsubmit="event.preventDefault(); newRecipe(this)"><!--Loads the editor when submitted-->
             <label for="name">Name: </label>
-            <input type="text" name="new-name" id="name">
+            <input type="text" name="new-name" id="name" required>
             <input type="submit" value="New Recipe" data-float="right">
             <input type="hidden" name="key"><!--The key can be added and sent with javascript-->
         </form>
