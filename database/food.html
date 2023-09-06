@@ -37,17 +37,17 @@
                     list += ("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
-                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='number' min='0' max="+item.qty+" step='0.01'>/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
+                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='"+(item.qty ? 'number' : 'hidden')+"' min='0' max="+item.qty+" step='0.01'>"+(item.qty ? '/' : '')+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added:<br>"+item.added+"</div>" +
-                            "<div>"+ (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>') +item.expiry+"</div>" +
+                            "<div>"+ (item.expiry ? (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>'):'') +item.expiry+"</div>" +
                         "</li>");
                 }
                 document.getElementById('output').innerHTML = list;
             };
             async function useItem(key, form) { //Decrementing the amount of items
                 const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
-                item.qty -= form['qty'].value; //Subtracting the amount used
+                item.qty = (item.qty*100 - form['qty'].value*100) / 100; //Subtracting the amount used
                 if (item.doRenew & item.qty < item.autoRenew) { //If below the set amount, and not renewed already
                     const tempQty = item.qty; //Stores the qty temporarily, so it can be restored later
                     item.qty = item.qtyRenew; //Sets the qty to add to the shopping list
