@@ -9,6 +9,7 @@
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script>
         <script>
+            let checked = false;
             async function submitForm(form) {
                 const item = {
                     name:form['name'].value,
@@ -37,17 +38,19 @@
                     "</li>");
                 };
                 document.getElementById('output').innerHTML = list;
+                findChecked(); //Detects if any items are checked initially
             };
             async function check(checkbox, key) { //Checking/unchecking an item
                 const item = await getItem(key, 'shoppingList');
                 item.checked = checkbox.checked; //Sets that the item is checked/unckecked
                 updateItem(key, item, 'shoppingList');
+                findChecked(); //Detects if any items have been checked
             }
             async function addAllToFridge() {
                 const items = await getAllItems('shoppingList'); //Get the shopping list
-                console.log(items);
+                
                 const promise = addArray(items, 'foodStore'); //Add to the fridge
-                console.log(2);
+                
                 promise.then(
                     async () => { 
                         const transaction = await getTrans('shoppingList', true);
@@ -56,7 +59,7 @@
                             transaction
                                 .objectStore('shoppingList')
                                 .delete(Number(key))//Deletes each item
-                                .onsuccess = (event) => console.log(event.target.result);
+                                
                         }
                     },
                     (error) => {
@@ -66,7 +69,8 @@
                 )
                 
             }
-            async function addChecked(form) {
+            async function addChecked() {
+                const form = document.getElementById('list');
                 const items = [];
                 for (x of form.elements) {
                     if (x.checked) { //Get the checked items
@@ -77,6 +81,49 @@
                 await addArray(items, 'foodStore'); //Add the items to the fridge
                 console.log(items);
                 loadItems(); //Reload the page after
+            }
+            async function findChecked() {
+                const form = document.getElementById('list');
+                for (x of form.elements) { //Check each element individually
+                    if (x.checked) { //If one is checked
+                        checked = true; 
+                        for (y of form.children) {
+                            if (y.hasAttribute('data-button-all')) { //'Add all' and 'Remove all'
+                                y.setAttribute('disabled', true);
+                                y.style.display = 'none';
+                            } else { //'Add checked' and 'Remove checked'
+                                y.removeAttribute('disabled');
+                                y.style.display = 'inline-block'
+                            }
+                        }
+                        
+                        return true //Break out of the loop
+                    }
+                }
+                checked = false; //If none of the elements are checked
+                for (y of form.children) {
+                    if (!y.hasAttribute('data-button-all')) { //'Add all' and 'Remove all'
+                        y.setAttribute('disabled', true);
+                        y.style.display = 'none';
+                    } else { //'Add checked' and 'Remove checked'
+                        y.removeAttribute('disabled');
+                        y.style.display = 'inline-block'
+                    }
+                }
+                return false
+            }
+            async function removeChecked() {
+                const form = document.getElementById('list');
+                for (x of form.elements) {
+                    if (x.checked) {
+                        removeItem(Number(x.name), 'shoppingList');
+                    }
+                }
+                loadItems();
+            }
+            async function removeAll() {
+                await removeAllItems('shoppingList');
+                loadItems();
             }
         </script>
     </head>
@@ -110,13 +157,18 @@
             <input type="reset" value="Clear" data-float="right">
         </form>
         <div class="form">
-            <button data-type="minor" onclick="addAllToFridge()">Add all to fridge</button>
+            
         </div>
 
         <div>
-            <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)">
-                <input type="submit" data-type="major" value="Add Selected to Fridge">
+            <form class="sticky" name="list" id="list" onsubmit="event.preventDefault()" data-cf>
+                <input type="button" data-type="major" value="Add Selected to Fridge" onclick="addChecked()" data-hidden>
+                <input type="button" data-type="minor" value="Remove Selected" onclick="removeChecked()" data-float="right" data-hidden>
+
+                <input type="button" data-type="major" value="Add all to fridge" onclick="addAllToFridge()" data-button-all>
+                <input type="button" data-type="minor" value="Remove All" data-float="right" onclick="removeAll()" data-button-all>
             </form>
+            
             <ul id="output"><!--The list of items in the shopping list-->
             </ul>
         </div>

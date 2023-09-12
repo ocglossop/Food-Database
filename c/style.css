@@ -59,6 +59,9 @@ a[data-decor]:not([data-decor=none]):hover { /*Adding hover to links*/
     color: var(--checkbox-hover-color)
 }
 div[data-inline] {display: inline-block} 
+[data-hidden] {
+    display: none;
+}
 
 nav#main {
     position: sticky; /*The navbar will stay at the top of the page when the user scrolls down*/
@@ -147,7 +150,7 @@ input, select, button { /*Applies to all input and button elements*/
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     
-    box-sizing: border-box; /*The height includes the margin and padding*/
+    box-sizing: border-box; /*The height includes the padding*/
     height: 1.7em; /*Relative to the font size of the element (1.5rem)*/
 
     background-color: var(--input-color);
@@ -164,22 +167,22 @@ input[list="unit-select"] {
     width: 4em;
 }
 
-input:focus { /*When the user is typing*/
+input:not([type=button]):not([type=submit]):focus { /*When the user is typing*/
     background-color: var(--input-focus-color);
 }
 /*Style for buttons*/
-input[type=submit], button[data-type=major], a[data-type=major] {
+input[type=submit], [data-type=major] {
     background-color: var(--button-color);
     color: white;
     margin: 1rem 0;
 }
-input[type=submit]:hover, button[data-type=major]:hover, a[data-type=major]:hover {
+input[type=submit]:hover, [data-type=major]:hover {
     background-color: var(--button-hover-color);
 }
-input[type=reset], button[data-type=minor] {
+input[type=reset], [data-type=minor] {
     background-color: var(--input-color);
 }
-input[type=reset]:hover, button[data-type=minor]:hover {
+input[type=reset]:hover, [data-type=minor]:hover {
     background-color: var(--input-focus-color);
     
 }

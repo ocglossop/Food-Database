@@ -52,7 +52,6 @@ async function getTrans(store, readwrite = true) {
     await dbPromise;
     let type = readwrite ? 'readwrite' : 'readonly'; //Whether or not the database is written or not
     let transaction = db.transaction(store, type);
-    console.log(transaction);
     return transaction //Returns the transaction object.
 }
 
@@ -184,5 +183,26 @@ function addArray(items, store) {
         }
 
         
+    })
+}
+function removeAllItems(store) {
+    return new Promise(async (resolve, reject) => {
+        await dbPromise;
+        const objectStore = db.transaction(store, 'readwrite').objectStore(store);
+        const request = objectStore.openCursor();
+
+        request.onsuccess = (event) => {
+            const cursor = event.target.result;
+            if (cursor) { //If there are still items
+                objectStore.delete(cursor.key); //Removes the item
+            } else {
+                resolve()
+            }
+        }
+        request.onerror = (event) => {
+            console.log(`removeAllItems failed. Error code: ${event.target.errorCode}`);
+            reject(event.target.errorCode);
+        }
+
     })
 }
