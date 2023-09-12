@@ -4,7 +4,10 @@
         <title>Help - Food Database</title> <!--The title that appears in the tab-->
         <link rel="icon" type="image/x-icon" href="/c/favicon.ico"> <!--I can add an icon later easily by doing this-->
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!--Importing icons-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
+        <script src="/c/accordion.js"></script>
     </head>
     <body>
         <nav id="main" class="cf include-html" data-include-src="/c/navbar.html">
@@ -18,6 +21,25 @@
         </nav>
         <h1>Help</h1>
         
+        <main><ul class="accordion-container">
+            <li>
+                <button class="accordion">What is the difference between 'Use By' and 'Best Before'?</button>
+                <div><p>
+                    'Use By' indicates that the food is unsafe to eat after the date specified. This is put on for health and safety reasons. 
+                    You should never eat food past its 'Use By' date.
+                </p><p>
+                    'Best Before' indicates the time when the food is at its freshest, but the food won't necessarily be unsafe after this date. 
+                    You should still take care before eating food past its 'Best Before' date, as it may still be unsafe.
+                </p></div>
+            </li><li>
+                <button class="accordion">Test</button>
+                <div>test</div>
+            </li><li>
+                <button class="accordion">Test</button>
+                <div>test</div>
+            </li>
+        </ul></main>
+        <script>toggleSetup()</script>
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
                 <ul>

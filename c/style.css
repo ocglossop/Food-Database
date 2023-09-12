@@ -14,6 +14,8 @@
     --output-item-color: rgb(232, 232, 232); /*The background colour of each list item*/
     --checkbox-color: rgb(178, 178, 178); /*The colour of a checkbox*/
     --checkbox-hover-color: rgb(128, 128, 128); 
+    --accordion-color: rgb(205, 205, 205);
+    --accordion-active-color: rgb(226, 226, 226);
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -305,6 +307,45 @@ ul#output {
     transform: rotate(45deg);
 }
 
+ul.accordion-container {
+    list-style-type: none;
+    padding: 0;
+    
+}
+ul.accordion-container li {
+    width: 100%;
+    box-sizing: border-box;
+    
+}
+button.accordion {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.3em;
+    height: auto; /*To prevent the height from being set by other CSS*/
+    background-color: var(--accordion-color);
+    text-align: left;
+}
+ul.accordion-container li div {
+    background-color: var(--accordion-active-color);
+    display: none;
+    padding: 0.1em 0;
+}
+button.accordion:hover, button.accordion.active, button.accordion:not(.js):focus {
+    background-color: var(--accordion-active-color);
+
+}
+button.accordion.active + div, button.accordion:not(.js):focus + div {
+    display: block
+}
+button.accordion:before {
+    content:"\002B";
+    float:right;
+    margin: 0 0.5em;
+    height: 100%;
+}
+button.accordion.active:before, button.accordion:not(.js):focus:before {
+    content:"\2212";
+}
 
 footer {
     padding: 1em;
@@ -332,7 +373,7 @@ footer nav ul li a:hover{
     form:not(.none) div {
         margin: 0.2em;
     }
-    input[type=submit], button[data-type=major], a[data-type=major] {
+    input[type=submit], [data-type=major] {
         margin: 0;
     }
     .item-use { /*The 'use' button*/
