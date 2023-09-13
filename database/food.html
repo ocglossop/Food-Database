@@ -8,25 +8,30 @@
         <link rel="stylesheet" href="/c/style.css"> <!--Link to the CSS file-->
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script> <!--Embeds the script for database access into the page-->
+        <script src="/c/edit.js"></script> <!--Embeds the script for editing items-->
         <script>//Processing the contents of the form when submitted
             async function submitForm(form) {
-                const item = { //Compiling the input into an object
-                    name:form['name'].value, //Retrieving a value from the form
-                    useBy:form['useBy'].value,
-                    unit:form['unit'].value,
-                    qty:form['qty'].value,
-                    added:form['added'].value,
-                    expiry:form['expiry'].value,
-                    autoRenew:form['auto-renew'].value,
-                    doRenew:form['auto-renew'].value ? true : false, //Whether the item should be automatically added
-                    qtyRenew:form['auto-renew'].value ? form['qty'].value : 0 //The amount to be added upon renewal
-                };
-                console.log(item);
-                await addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
-                loadItems(); //Refreshes the list after an item is added
-                form.reset();
-                updateUnit(document.getElementById("unit")); //Clears the unit
-                return false //Prevents the form from reloading the page
+                if (!inEditMode) {const item = { //Compiling the input into an object
+                        name:form['name'].value, //Retrieving a value from the form
+                        useBy:form['useBy'].value,
+                        unit:form['unit'].value,
+                        qty:form['qty'].value,
+                        added:form['added'].value,
+                        expiry:form['expiry'].value,
+                        autoRenew:form['auto-renew'].value,
+                        doRenew:form['auto-renew'].value ? 'true' : 'false', //Whether the item should be automatically added
+                        qtyRenew:form['auto-renew'].value ? form['qty'].value : 0 //The amount to be added upon renewal
+                    };
+                    console.log(item);
+                    await addItem(item, 'foodStore', console.log); //Adds the item to the database and logs the key
+                    loadItems(); //Refreshes the list after an item is added
+                    form.reset();
+                    updateUnit(document.getElementById("unit")); //Clears the unit
+                    return false //Prevents the form from reloading the page
+                } else {
+                    window.alert("Cannot add items while editing")
+                }
+
             }
             async function loadItems() {
                 const items = await getAllItems('foodStore'); //Instead of having this function as a callback, I am using async/await
@@ -48,7 +53,7 @@
             async function useItem(key, form) { //Decrementing the amount of items
                 const item = await getItem(key, 'foodStore'); //The function will pause until the data is loaded
                 item.qty = (item.qty*100 - form['qty'].value*100) / 100; //Subtracting the amount used
-                if (item.doRenew & item.qty < item.autoRenew) { //If below the set amount, and not renewed already
+                if (item.doRenew == 'true' & item.qty < item.autoRenew) { //If below the set amount, and not renewed already
                     const tempQty = item.qty; //Stores the qty temporarily, so it can be restored later
                     item.qty = item.qtyRenew; //Sets the qty to add to the shopping list
                     await addItem(item, 'shoppingList'); //Add to shopping list
@@ -67,6 +72,60 @@
             function updateUnit(input) { //Called to update the units for the automatic add amount
                 let unit = input.value;
                 document.getElementById('unit-out').innerHTML = unit;
+            }
+
+            async function loadEdit() {
+                const items = await getAllItems('foodStore'); 
+                let list = '';
+                for(x in items) {
+                    item = items[x]
+                    list += `<li>
+                        <form class="none edit-forms" data-key="${x}"><!--So that the key can be identified when saving-->
+                            <div>
+                                <input type="text" name="name" placeholder="name" value="${item.name}">
+                            </div><div>
+                                <input type="number" name="qty" placeholder="qty" value="${item.qty}" min="0" step="0.01">
+                                <input type="text" list="unit-select" value="${item.unit}" name="unit">
+                            </div><div>
+                                <label>
+                                    Added:
+                                    <input type="date" name="added" value="${item.added}">
+                                </label>
+                            </div><div>
+                                <select name="useBy">
+                                    <option ${item.useBy == 'true' ? 'selected' : ''} value=true>Use By</option>
+                                    <option ${item.useBy == 'false' ? 'selected' : ''} value=false>Best Before</option>
+                                </select>
+                                <input type="date" name="expiry" value="${item.expiry}">
+                            </div><div>
+                                <label>
+                                    Add automatically below: 
+                                    <input type="number" name="auto-renew" value="${item.autoRenew}" oninput="setDoRenew(this)" min="0" step="0.01">
+                                    <input type="hidden" name="do-renew" value="${item.doRenew}">
+                                </label>
+                            </div><div>
+                                <label>
+                                    Amount to add: 
+                                    <input type="number" name="qty-renew" value="${item.qtyRenew}" min="0" step="0.01">
+                                </label>
+                            </div>
+                        </form>
+                    </li>`
+                    
+                }
+                document.getElementById('output').innerHTML = list;
+            }
+            function setDoRenew(input) { //Setting 'doRenew' when 'autoRenew' is edited
+                console.log('ran');
+                if (input.value != 0) { //If the value is changed to something other than zero
+                    console.log('1');
+                    input.nextElementSibling.value = true; //Sets the value for 'doRenew' to be passed to the function
+                    console.log('set');
+                } else { 
+                    console.log('2');
+                    input.nextElementSibling.value = false;
+                    console.log('reset');
+                }
             }
         </script>
     </head>
@@ -89,7 +148,7 @@
             </div><div>
                 <label for="qty">Amount: </label>
                 <input type="number" name="qty" id="qty" min="0" step="0.01">
-                <input type="text" list="unit-select" id="unit" name="unit" onchange="updateUnit(this)">
+                <input type="text" list="unit-select" id="unit" name="unit" oninput="updateUnit(this)">
                 <datalist id="unit-select">
                     <option value="">
                     <option value="g">
@@ -107,18 +166,27 @@
                 <input type="date" name="expiry" id="expiry">
             </div><div>
                 <label>Add to shopping list automatically when below: 
-                    <input type="number" name="auto-renew" id="auto-renew">
+                    <input type="number" name="auto-renew" id="auto-renew" min="0" step="0.01">
                     <span id="unit-out"><!--The selected unit will be shown here--></span>
                 </label>
                 <!--Add tooltip-->
             </div>
-            <input type="submit" value="Add Item">
+            <input type="submit" value="Add Item" id="add-item-submit">
             <input type="reset" value="Clear" data-float="right">
         </form>
-        <script>
-            document.getElementById('added').defaultValue = getTodayFormatted(); //Sets the 
-        </script>
+        <form onsubmit="event.preventDefault();" id="edit-buttons" data-cf>
+            <button data-type="edit" onclick="editMode(loadEdit)">Edit Items</button>
+            
+            <button data-type="major" data-hidden onclick="editSave('foodStore', loadItems,
+                {'name':'name', 'qty':'qty', 'unit':'unit', 'useBy':'useBy', 'added':'added', 
+                'expiry':'expiry', 'autoRenew':'auto-renew', 'doRenew':'do-renew', 'qtyRenew':'qty-renew'} /*Which attributes to add from the forms*/
+                )">Save Changes</button>
+            <button data-type="minor" data-hidden data-float="right" onclick="editRevert(loadItems)">Revert Changes</button>
+        </form>
 
+        <script>
+            document.getElementById('added').defaultValue = getTodayFormatted(); //Sets the default date of the 'added' input
+        </script>
         <ul id="output"><!--The list of items in the fridge-->
             <!--Todo: indicate that the list is loading-->
         </ul>

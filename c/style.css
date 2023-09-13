@@ -16,6 +16,7 @@
     --checkbox-hover-color: rgb(128, 128, 128); 
     --accordion-color: rgb(205, 205, 205);
     --accordion-active-color: rgb(226, 226, 226);
+    --form-edit-color: rgb(200, 200, 200);
 }
 body {
     font-family: Arial, Helvetica, sans-serif; 
@@ -145,7 +146,7 @@ form:not(.none) div {
 }
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     display: block; /*For mobile devices, to put the input below the label*/
 }
 input, select, button { /*Applies to all input and button elements*/
@@ -188,6 +189,14 @@ input[type=reset]:hover, [data-type=minor]:hover {
     background-color: var(--input-focus-color);
     
 }
+[data-type=edit] {
+    background-color: var(--nav-color);
+}
+[data-type=edit]:hover {
+    background-color: var(--nav-hover-color);
+    color: white;
+}
+
 form textarea {
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
@@ -220,7 +229,7 @@ ul#output {
     max-width: 900px; /*The output list will be no larger than this width*/
     margin: auto;
 }
-#output li {
+#output:not(.edit) li {
     padding: 0.5em;
     background-color: var(--output-item-color);
     width: 100%;
@@ -245,6 +254,20 @@ ul#output {
     background-color: var(--input-focus-color);
 }
 
+#output form.edit-forms {
+    grid-template-columns: 100%;
+    background-color: var(--form-edit-color);
+
+    padding: 0.5em;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.25em 0;
+
+    display: grid; /*To make a grid display of the elements inside*/
+    justify-content: space-between; /*The items are spread to the sides of the container*/
+
+    gap: 0.6em; /*Adds gaps between the grid items*/
+}
 
 /*From W3Schools*/
 .check-container {
@@ -396,6 +419,9 @@ footer nav ul li a:hover{
     }
     #output:not(.grid-600) form { /*The form is only narrow on mobile*/
         min-width: 10em;
+    }
+    #output form.edit-forms {
+        grid-template-columns: auto auto;
     }
 }
 @media only screen and (min-width:800px) { /*For the recipe editor page*/
