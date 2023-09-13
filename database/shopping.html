@@ -8,18 +8,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script>
+        <script src="/c/edit.js"></script>
         <script>
             let checked = false;
             async function submitForm(form) {
-                const item = {
-                    name:form['name'].value,
-                    qty:form['qty'].value,
-                    unit:form['unit'].value
-                }
-                await addItem(item, 'shoppingList', console.log);
-                loadItems();
-                form.reset(); //Reset the form after
-                return false 
+                if (!inEditMode) {const item = {
+                        name:form['name'].value,
+                        qty:form['qty'].value,
+                        unit:form['unit'].value
+                    }
+                    await addItem(item, 'shoppingList', console.log);
+                    loadItems();
+                    form.reset(); //Reset the form after
+                    return false
+                } 
             }
             async function loadItems() {
                 const items = await getAllItems("shoppingList");
@@ -39,6 +41,7 @@
                 };
                 document.getElementById('output').innerHTML = list;
                 findChecked(); //Detects if any items are checked initially
+                document.getElementById('list').style.position = 'sticky'; //Makes the 'add' and 'remove' buttons sticky.
             };
             async function check(checkbox, key) { //Checking/unchecking an item
                 const item = await getItem(key, 'shoppingList');
@@ -74,7 +77,9 @@
                 const items = [];
                 for (x of form.elements) {
                     if (x.checked) { //Get the checked items
-                        items.push(await getItem(Number(x.name), 'shoppingList'));
+                        const item = await getItem(Number(x.name), 'shoppingList');
+                        item.added = getTodayFormatted(); //Sets the 'added' date to 'today'
+                        items.push(item);
                         await removeItem(Number(x.name), 'shoppingList'); //Remove the item from the shopping list
                     }
                 };
@@ -125,6 +130,29 @@
                 await removeAllItems('shoppingList');
                 loadItems();
             }
+            async function loadEdit() {
+                const items = await getAllItems('shoppingList'); 
+                let list = '';
+                for(x in items) {
+                    item = items[x]
+                    list += `<li>
+                        <form class="none edit-forms" data-key="${x}"><!--So that the key can be identified when saving-->
+                            <div>
+                                <input type="text" name="name" placeholder="name" value="${item.name}">
+                            </div><div>
+                                <input type="number" name="qty" placeholder="qty" value="${item.qty}" min="0" step="0.01">
+                                <input type="text" list="unit-select" value="${item.unit}" name="unit">
+                            </div>
+                        </form>
+                    </li>`
+                }
+                document.getElementById('output').innerHTML = list;
+                for (x of document.getElementById('list').children) { //Hides the 'add' and 'remove' buttons
+                    x.setAttribute('disabled', true);
+                    x.style.display = 'none'; 
+                }
+                document.getElementById('list').style.position = 'static'; //Stops the form from sticking
+            }
         </script>
     </head>
     <body>
@@ -156,9 +184,7 @@
             <input type="submit" value="Add Item">
             <input type="reset" value="Clear" data-float="right">
         </form>
-        <div class="form">
-            
-        </div>
+        
 
         <div>
             <form class="sticky" name="list" id="list" onsubmit="event.preventDefault()" data-cf>
@@ -168,7 +194,12 @@
                 <input type="button" data-type="major" value="Add all to fridge" onclick="addAllToFridge()" data-button-all>
                 <input type="button" data-type="minor" value="Remove All" data-float="right" onclick="removeAll()" data-button-all>
             </form>
-            
+            <form onsubmit="event.preventDefault();" id="edit-buttons" data-cf>
+                <button data-type="edit" onclick="editMode(loadEdit)">Edit Items</button>
+                
+                <button data-type="major" data-hidden onclick="editSave('shoppingList', loadItems)">Save Changes</button>
+                <button data-type="minor" data-hidden data-float="right" onclick="editRevert(loadItems)">Revert Changes</button>
+            </form>
             <ul id="output"><!--The list of items in the shopping list-->
             </ul>
         </div>

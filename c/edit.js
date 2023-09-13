@@ -10,6 +10,7 @@ function editMode(callback) { //Sets up 'edit mode'
             y.style.display = 'none'
         }
     };
+    form.classList.add('sticky'); //Makes the 'save' and 'revert' buttons stick to the top
     document.getElementById('output').classList.add('edit'); //Styles the output list correctly
     inEditMode = true;
     if (callback) { //To open 'edit mode'
@@ -27,6 +28,7 @@ function editRevert(callback) {
             y.style.display = 'none'
         }
     };
+    form.classList.remove('sticky'); //Stops the buttons from sticking
     document.getElementById('output').classList.remove('edit'); //Styles the output list correctly
     inEditMode = false;
     if (callback) { //To exit 'edit mode'
@@ -35,7 +37,7 @@ function editRevert(callback) {
 }
 async function editSave(store, callback, attributes = {'name':'name', 'qty':'qty', 'unit':'unit'}) { //{name of attribute: name of input}
     const forms = document.getElementsByClassName('edit-forms'); //A list of all the individual forms for each item
-    for (x of forms) { //For each form, running asynchronously
+    for (x of forms) { //For each form
         let key = x.getAttribute('data-key'); //Get the key of the item
         const item = await getItem(Number(key), store);
         console.log(item);
@@ -45,6 +47,7 @@ async function editSave(store, callback, attributes = {'name':'name', 'qty':'qty
         }
         updateItem(Number(key), item, store); //Update the item
     };
+     
     const form = document.getElementById('edit-buttons');
     for (y of form.children) { //For each of the buttons
         if (!y.hasAttribute('data-hidden')) { //Reveals the edit button
@@ -55,6 +58,7 @@ async function editSave(store, callback, attributes = {'name':'name', 'qty':'qty
             y.style.display = 'none'
         }
     };
+    form.classList.remove('sticky');
     document.getElementById('output').classList.remove('edit'); //Styles the output list correctly
     inEditMode = false;
     if (callback) { //To exit 'edit mode'
