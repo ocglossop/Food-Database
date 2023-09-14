@@ -65,7 +65,7 @@
                     loadItems(); //Updates the list
                 } else { //If some of the item is still left
                     await updateItem(key, item, 'foodStore');
-                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input type='submit' value='Use'>"
+                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'>"
                         //Updates the page
                 }
             }
@@ -85,7 +85,7 @@
                                 <input type="text" name="name" placeholder="name" value="${item.name}">
                             </div><div>
                                 <input type="number" name="qty" placeholder="qty" value="${item.qty}" min="0" step="0.01">
-                                <input type="text" list="unit-select" value="${item.unit}" name="unit">
+                                <input type="text" list="unit-select" value="${item.unit}" name="unit" placeholder='unit'>
                             </div><div>
                                 <label>
                                     Added:
@@ -148,7 +148,7 @@
             </div><div>
                 <label for="qty">Amount: </label>
                 <input type="number" name="qty" id="qty" min="0" step="0.01">
-                <input type="text" list="unit-select" id="unit" name="unit" oninput="updateUnit(this)">
+                <input type="text" list="unit-select" id="unit" name="unit" oninput="updateUnit(this)"  placeholder="unit">
                 <datalist id="unit-select">
                     <option value="">
                     <option value="g">

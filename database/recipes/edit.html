@@ -148,7 +148,7 @@
                                         <input type="text" name="name" placeholder="name" value="${item.name}">
                                     </div><div>
                                         <input type="number" name="qty" placeholder="qty" value="${item.qty}" min="0" step="0.01">
-                                        <input type="text" list="unit-select" value="${item.unit}" name="unit">
+                                        <input type="text" list="unit-select" value="${item.unit}" name="unit" placeholder="unit">
                                     </div>
                                 </form>
                             </li>`
@@ -198,7 +198,7 @@
                         </div><div>
                             <label for="qty">Amount: </label>
                             <input type="number" name="qty" id="qty" min="0" step="0.01">
-                            <input type="text" list="unit-select" id="unit" name="unit">
+                            <input type="text" list="unit-select" id="unit" name="unit" placeholder="unit">
                             <datalist id="unit-select">
                                 <option value="">
                                 <option value="g">
