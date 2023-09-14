@@ -45,7 +45,7 @@
                                 "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='"+(item.qty ? 'number' : 'hidden')+"' min='0' max="+item.qty+" step='0.01'>"+(item.qty ? '/' : '')+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added:<br>"+item.added+"</div>" +
-                            "<div>"+ (item.expiry ? (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>'):'') +item.expiry+"</div>" +
+                            "<div>"+ (item.expiry ? (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>')+item.expiry:'') +"</div>" +
                         "</li>");
                 }
                 document.getElementById('output').innerHTML = list;
