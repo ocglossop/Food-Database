@@ -21,7 +21,9 @@
                     loadItems();
                     form.reset(); //Reset the form after
                     return false
-                } 
+                } else {
+                    window.alert("Cannot add items while editing")
+                }
             }
             async function loadItems() {
                 const items = await getAllItems("shoppingList");
