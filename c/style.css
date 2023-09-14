@@ -348,7 +348,7 @@ button.accordion {
     background-color: var(--accordion-color);
     text-align: left;
 }
-ul.accordion-container li div {
+ul.accordion-container li > div {
     background-color: var(--accordion-active-color);
     display: none;
     padding: 0.1em 0;
@@ -427,5 +427,11 @@ footer nav ul li a:hover{
 @media only screen and (min-width:800px) { /*For the recipe editor page*/
     .grid-responsive {
             grid-template-columns: 50% 50%;
-        }
+    }
+    .grid-responsive button.accordion { /*Hiding the accordion buttons on desktop*/
+        display: none;
+    }
+    .grid-responsive.accordion-container li > div { /*Displaying the accordion content on desktop*/
+        display: block
+    }
 }

@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/c/include.js"></script> <!--Embeds the script for HTML includes in the page-->
         <script src="/dbc/dbglobal.js"></script>
+        <script src="/c/edit.js"></script>
+        <script src="/c/accordion.js"></script>
         <script>
             var recipe; //Global variable, so that the ingredient list doesn't have to be reloaded each time
             var ready = false; //Used by removeIngredient, to ensure that the correct ingredient is removed.
@@ -53,6 +55,7 @@
                     }
                 }
                 document.getElementById('output').innerHTML = list;
+                document.getElementById('list').style.display = 'inline-block'; //Show the 'add' and 'remove' buttons
                 ready = true; //Marks that removeItem can be called again
             };
             async function loadText() { //Loading the name and text from the database
@@ -62,17 +65,21 @@
             }
 
             async function addIngredient(form) {
-                await recipePromise; //Wait for the recipe to be loaded
-                const item = {
-                    name:form['name'].value,
-                    qty:form['qty'].value,
-                    unit:form['unit'].value
+                if (!inEditMode) {
+                    await recipePromise; //Wait for the recipe to be loaded
+                    const item = {
+                        name:form['name'].value,
+                        qty:form['qty'].value,
+                        unit:form['unit'].value
+                    }
+                    recipe.ingredients.push(item); //Adds the item to the list of ingredients.
+                    await updateItem(key, recipe, 'recipeStore'); //Wait until the item is added
+                    loadItems(); //Reload the list of ingredients
+                    form.reset(); //Clears the form after adding an ingredient
+                    return false
+                } else {
+                    window.alert("Cannot add items while editing")
                 }
-                recipe.ingredients.push(item); //Adds the item to the list of ingredients.
-                await updateItem(key, recipe, 'recipeStore'); //Wait until the item is added
-                loadItems(); //Reload the list of ingredients
-                form.reset(); //Clears the form after adding an ingredient
-                return false 
             }
             async function removeIngredient(index) { //Removing an item from the list
                 if (ready) { //Makes sure that the list is reloaded before more elements are removed
@@ -125,8 +132,38 @@
                 }
                 await updateItem(key, recipe, 'recipeStore');
                 loadItems(); //Reload the list
+            };
+            async function loadEdit() {
+                await recipePromise; 
+                const items = recipe.ingredients;
                 
-            }
+                let list = '';
+                if (items.length) { //Checking if there are items in the array
+                    for(x in items) {
+                        item = items[x];
+                        if (item) { //Checking if the value is undefined
+                            list += `<li>
+                                <form class="none edit-forms" data-index="${x}">
+                                    <div>
+                                        <input type="text" name="name" placeholder="name" value="${item.name}">
+                                    </div><div>
+                                        <input type="number" name="qty" placeholder="qty" value="${item.qty}" min="0" step="0.01">
+                                        <input type="text" list="unit-select" value="${item.unit}" name="unit">
+                                    </div>
+                                </form>
+                            </li>`
+                        }
+                    }
+                }
+                document.getElementById('output').innerHTML = list;
+                document.getElementById('list').style.display = 'none'; //Hide the 'add' and 'remove' buttons
+                ready = true; //Marks that removeItem can be called again
+            };
+            async function exitEdit() {
+                await updateItem(key, recipe, 'recipeStore');
+                loadItems();
+            };
+            
         </script>
     </head>
     <body>
@@ -140,51 +177,64 @@
             </ul>
         </nav>
         <h1 id="recipe-name"></h1>
-        <div data-cf class="grid-responsive"><!--Container for the recipe editor and ingredient list-->
-            <div>
-                <form onsubmit="event.preventDefault(); saveText(this)">
-                    <label for="recipe-editor">Recipe</label>
-                    <textarea id="recipe-editor" name="text"></textarea>
-                    <input type="submit" value="Save">
-                    <input type="reset" value="Clear"  onclick="document.getElementById('recipe-editor').innerHTML = '';">
-                </form>
-            </div><div>
-                <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
-                    <div><!--Will be used to separate different parts of the form-->
-                        <label for="name">Ingredient: </label>
-                        <input type="text" name="name" id="name" required>
-                    </div><div>
-                        <label for="qty">Amount: </label>
-                        <input type="number" name="qty" id="qty" min="0" step="0.01">
-                        <input type="text" list="unit-select" id="unit" name="unit">
-                        <datalist id="unit-select">
-                            <option value="">
-                            <option value="g">
-                            <option value="kg">
-                            <option value="L">
-                        </datalist>
-                    </div>
-                    <input type="submit" value="Add Item">
-                    <input type="reset" value="Clear Form" data-float="right">
-                </form>
-                <div class="form">
-                    <button data-type="minor" onclick="addToShoppingList()">Add All to Shopping List</button>
-                </div>
+        <ul data-cf class="grid-responsive accordion-container"><!--Container for the recipe editor and ingredient list-->
+            <li>
+                <button class="accordion">Recipe</button>
                 <div>
-                    <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)" data-cf>
-                        <input type="submit" data-type="major" value="Add Selected">
-                        <input type="button" data-type="minor" data-float="right" value="Remove Selected" onclick="removeChecked(document.getElementById('list'))">
+                    <form onsubmit="event.preventDefault(); saveText(this)">
+                        <label for="recipe-editor">Recipe</label>
+                        <textarea id="recipe-editor" name="text"></textarea>
+                        <input type="submit" value="Save">
+                        <input type="reset" value="Clear"  onclick="document.getElementById('recipe-editor').innerHTML = '';">
                     </form>
-                    <ul id="output"><!--The list of items in the fridge-->
-                        <!--Add loading animation-->
-                    </ul>
                 </div>
-            </div>
-            <script>
-                loadItems();
-                loadText();
-            </script>
-        </div>
+            </li><li>
+                <button class="accordion">Ingredients</button>
+                <div>
+                    <form onsubmit="event.preventDefault(); addIngredient(this)" data-cf>
+                        <div><!--Will be used to separate different parts of the form-->
+                            <label for="name">Ingredient: </label>
+                            <input type="text" name="name" id="name" required>
+                        </div><div>
+                            <label for="qty">Amount: </label>
+                            <input type="number" name="qty" id="qty" min="0" step="0.01">
+                            <input type="text" list="unit-select" id="unit" name="unit">
+                            <datalist id="unit-select">
+                                <option value="">
+                                <option value="g">
+                                <option value="kg">
+                                <option value="L">
+                            </datalist>
+                        </div>
+                        <input type="submit" value="Add Item">
+                        <input type="reset" value="Clear Form" data-float="right">
+                    </form>
+                    <div class="form">
+                        <button data-type="minor" onclick="addToShoppingList()">Add All to Shopping List</button>
+                    </div>
+                    <div>
+                        <form class="sticky" name="list" id="list" onsubmit="event.preventDefault(); addChecked(this)" data-cf>
+                            <input type="submit" data-type="major" value="Add Selected">
+                            <input type="button" data-type="minor" data-float="right" value="Remove Selected" onclick="removeChecked(document.getElementById('list'))">
+                        </form>
+                        <form onsubmit="event.preventDefault();" id="edit-buttons" data-cf>
+                            <button data-type="edit" onclick="editMode(loadEdit)">Edit Items</button>
+                            
+                            <button data-type="major" data-hidden onclick="editSaveArray(recipe.ingredients, exitEdit)">Save Changes</button>
+                            <button data-type="minor" data-hidden data-float="right" onclick="editRevert(loadItems)">Revert Changes</button>
+                        </form>
+                        <ul id="output">
+                            <!--Add loading animation-->
+                        </ul>
+                    </div>
+                </div>
+                <script>
+                    loadItems();
+                    loadText();
+                    toggleSetup();
+                </script>
+            </li>
+        </ul>
         <footer class="cf include-html" data-include-src="/c/footer.html">
             <nav>
                 <ul>
