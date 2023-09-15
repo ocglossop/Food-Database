@@ -196,6 +196,13 @@ input[type=reset]:hover, [data-type=minor]:hover {
     background-color: var(--nav-hover-color);
     color: white;
 }
+[data-type=delete] {
+    background-color: red;
+    color: white;
+}
+[data-type=delete]:hover {
+    background-color: rgb(167, 33, 33)
+}
 
 form textarea {
     font-size: 1rem;
