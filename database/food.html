@@ -42,7 +42,7 @@
                     list += ("<li>" +
                             "<div>"+item.name+"</div>" +
                             "<div>" +
-                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='"+(item.qty ? 'number' : 'hidden')+"' min='0' max="+item.qty+" step='0.01'>"+(item.qty ? '/' : '')+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
+                                "<form data-float='right' class='none' onsubmit='event.preventDefault(); useItem("+x+", this)' data-cf><input name='qty' type='"+(item.qty ? 'number' : 'hidden')+"' min='0' step='0.01' max="+item.qty+">"+(item.qty ? '/' : '')+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'></form>" +
                             "</div>" +
                             "<div>Added:<br>"+item.added+"</div>" +
                             "<div>"+ (item.expiry ? (item.useBy == 'true' ? 'Use By:<br>' : 'Best Before:<br>')+item.expiry:'') +"</div>" +
@@ -65,7 +65,7 @@
                     loadItems(); //Updates the list
                 } else { //If some of the item is still left
                     await updateItem(key, item, 'foodStore');
-                    form.innerHTML = "<input name='qty' type='number' min='0' max="+item.qty+">/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'>"
+                    form.innerHTML = "<input name='qty' type='number' min='0' step='0.01' max="+item.qty+">/"+item.qty+" "+item.unit+"<input class='item-use' type='submit' value='Use'>"
                         //Updates the page
                 }
             }
