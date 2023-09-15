@@ -188,15 +188,17 @@ function addArray(items, store) {
 function removeAllItems(store) {
     return new Promise(async (resolve, reject) => {
         await dbPromise;
-        const objectStore = db.transaction(store, 'readwrite').objectStore(store);
+        const transaction = db.transaction(store, 'readwrite');
+        const objectStore = transaction.objectStore(store);
         const request = objectStore.openCursor();
 
         request.onsuccess = (event) => {
             const cursor = event.target.result;
             if (cursor) { //If there are still items
                 objectStore.delete(cursor.key); //Removes the item
+                cursor.continue();
             } else {
-                resolve()
+                resolve();
             }
         }
         request.onerror = (event) => {
